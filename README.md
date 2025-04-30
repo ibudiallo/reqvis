@@ -24,7 +24,7 @@
 
 This project is in active development. Star and watch this repository to be notified when the implementation is ready.
 
-You can view a demo with a sample of my server data by checking the [public folder](public).
+You can view a demo with a sample of my server data by checking the [public folder](public). Clone the repo and open the index.html file in your browser.
 
 ## 📊 Log Format Support
 
