@@ -1,9 +1,9 @@
 # reqvis
 
-[![GitHub stars](https://img.shields.io/github/stars/your-username/reqvis?style=social)](https://github.com/your-username/reqvis/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/your-username/reqvis?style=social)](https://github.com/your-username/reqvis/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/your-username/reqvis)](https://github.com/your-username/reqvis/issues)
-[![GitHub license](https://img.shields.io/github/license/your-username/reqvis)](https://github.com/your-username/reqvis/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/ibudiallo/reqvis?style=social)](https://github.com/your-username/reqvis/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ibudiallo/reqvis?style=social)](https://github.com/your-username/reqvis/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/ibudiallo/reqvis)](https://github.com/your-username/reqvis/issues)
+[![GitHub license](https://img.shields.io/github/license/ibudiallo/reqvis)](https://github.com/ibudiallo/reqvis/blob/master/LICENSE)
 
 ## 🚀 Overview
 
