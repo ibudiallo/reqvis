@@ -1,0 +1,24 @@
+{
+  "name": "reqvis",
+  "version": "1.0.0",
+  "description": "Reqvis is a lightweight, browser-based log visualization tool.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibudiallo/reqvis.git"
+  },
+  "keywords": [
+    "log",
+    "visualization"
+  ],
+  "author": "Ibrahim Diallo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ibudiallo/reqvis/issues"
+  },
+  "homepage": "https://github.com/ibudiallo/reqvis#readme"
+}
