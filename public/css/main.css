@@ -1,0 +1,270 @@
+/* Reset some default styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+
+.page-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.page-header .logo img {
+    height: 50px;
+    margin-right: 1rem;
+}
+.page-hdr__title h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: #fff;
+    line-height: 1.1em;
+}
+.page-hdr__title p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.page-main {
+    padding: 2rem;
+    background-color: #fff;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.page-footer a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.page-footer a:hover {
+    text-decoration: underline;
+}
+
+/** Side Bar **/
+.sidebar {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    height: 100%;
+    overflow-y: hidden;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    opacity: .9;
+    height: 100%;
+    transition: height 0.3s ease-in-out;
+    border-radius: 10px;
+}
+.sidebar.hidden {
+    display: block;
+    height: 50px;
+}
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+.sidebar-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+.menu-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #4CAF50;
+    margin-top: 1em;
+}
+.sidebar-content {
+    display: flex;
+}
+.sidebar-content > section {
+    margin-right: 20px;
+}
+.progress-groups {
+    display: table;
+}
+.progress-group {
+    display: table-row;
+    margin: 3px 0;
+}
+.progress-group label,
+.progress-group input,
+.progress-group span {
+    display: table-cell;
+    margin: 12px 6px;
+}
+
+/* Upload section **/
+.upload-section {
+    text-align: center;
+    margin: 20px 0;
+}
+.upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+    color: #333;
+    margin: 20px 0;
+}
+.upload-area.hasFile .upload-text {
+    display: none;
+}
+.upload-area .upload-complete {
+    display: none;
+}
+.upload-area.hasFile .upload-complete {
+    display: block;
+}
+.upload-area:hover,
+.upload-area.active {
+    background-color: #e6e6e6;
+}
+.upload-link {
+    color: #007BFF;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.file-start {
+    display: none;
+}
+.file-start.show {
+    display: block;
+}
+
+.visualization {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.visualization-content {
+    position: relative;
+}
+
+.visualization-canvas {
+    display: flex;
+    justify-content: center;
+}
+.visualization-canvas-box {
+    min-width: 800px;
+    margin-right: 12px;
+}
+.box-info {
+    margin-bottom: 20px;
+}
+.box-info.box-it {
+    border: 1px solid #4CAF50;
+    background-color: #f9f9f9;
+    padding: 6px;
+    width: 100%;
+    min-width: 200px;
+    border-radius: 10px;
+}
+.box-info.memory {
+    padding: 6px;
+    width: 100%;
+    min-width: 400px;
+}
+
+
+.box-info-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+.visualization-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #121212;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.visualization-controls.hidden {
+    display: none;
+}
+.vis-controls-button {
+    background-color: #333;
+    border-radius: 50%;
+}
+.vis-controls-button button {
+    width: 32px;
+    height: 32px;
+    display: block;
+    line-height: 32px;
+    text-indent: 42px;
+    overflow: hidden;
+    border: none;
+    background: none;
+}
+.vis-controls-button button.play {
+    background: url(../image/play.svg) no-repeat center center;
+    background-size: 32px 32px;
+}
+.vis-controls-button button.pause {
+    background: url(../image/pause.svg) no-repeat center center;
+    background-size: 32px 32px;
+}
+.visualization-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.vis-controls-bar {
+    position: relative;
+    margin-left: 10px;
+    width: 100%;
+    height: 32px;
+}
+.vis-controls-bar-inner {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #777;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: 2;
+}
+.vis-controls-bar-columns {
+    display: flex;
+    align-items: baseline;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.vis-controls-bar-columns .block {
+    background-color: #4CAF50;
+    height: var(--size);
+    width: 3px;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease-in-out;
+    margin-right: 1px;
+}
