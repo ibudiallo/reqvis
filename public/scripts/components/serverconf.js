@@ -12,6 +12,9 @@ const ServerConfigComponent = () => {
    * @returns 
    */
   const createServerConfigComponent = (config) => {
+    setTimeout(() => {
+        GlobalEvent.emit("serverConfigUpdated", config);
+    }, 100);
     const props = Object.keys(config).map((name) => {
         const renderText = (name) => {
           return h("input", {
@@ -33,7 +36,7 @@ const ServerConfigComponent = () => {
             max: config[name].max || 100,
             step: config[name].step || 1,
             oninput: (e) => {
-              config[name].val = e.target.value;
+              config[name].val = parseInt(e.target.value);
               updateServerConfig(config);
             },
           });

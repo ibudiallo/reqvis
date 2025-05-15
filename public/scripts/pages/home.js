@@ -10,10 +10,10 @@ const Home = async (reqPath) => {
 
     const serverConfig = {
         serverName: {val: "Apache 2", type: "text", name: "Server Name"},
-        instances: {val: 2, type: "number", min: 1, max: 10, name: "Instances"},
+        instances: {val: 2, type: "number", min: 1, max: 4, name: "Instances"},
         workerMin: {val: 25, type: "number", min: 5, max: 50, name: "Worker Min"},
         workerMax: {val: 75, type: "number", min: 51, max: 200, name: "Worker Max"},
-        memory: {val: 512, type: "number", min: 512, max: 3072, step: 512, name: "Memory (MB)"},
+        memory: { val: 1024, type: "number", min: 512, max: 3072, step: 512, name: "Memory (MB)"},
     }
 
     const serverConfigComponent = ServerConfigComponent().createServerConfigComponent(serverConfig);

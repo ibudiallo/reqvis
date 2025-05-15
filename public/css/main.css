@@ -141,6 +141,9 @@ body, html {
     text-decoration: underline;
     cursor: pointer;
 }
+.file-info p {
+    margin-bottom: 6px;
+}
 .file-start {
     display: none;
 }
@@ -183,12 +186,24 @@ body, html {
     width: 100%;
     min-width: 400px;
 }
-
-
 .box-info-name {
     font-weight: bold;
     margin-bottom: 10px;
     color: #4CAF50;
+}
+.box-info-modules {
+    display: flex;
+    justify-content: space-between;
+}
+.box-info-modules-cols {
+    height: 36px;
+}
+.bim-item {
+    display: inline-block;
+    height: 100%;
+    width: 2px;
+    margin-right: 1px;
+    background-color: #4CAF50;
 }
 
 .visualization-controls {
