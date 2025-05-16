@@ -17,7 +17,7 @@ const Processor = {
         dateTime: new Date(dateTimeStr),
         method: method.replace(/"/g, ""),
         uri,
-        statusCode,
+        statusCode: parseInt(statusCode),
         size,
         referrer,
         userAgent: ua.join(" "),

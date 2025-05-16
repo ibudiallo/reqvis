@@ -49,6 +49,12 @@ const Visualization = () => {
         document.querySelector(".sidebar").style.display = "none";
         onDataReady();
     });
+    GlobalEvent.on("processInfoUpdated", (info) => {
+        boxInfo.success.innerText = info.success;
+        boxInfo.redirect.innerText = info.redirect;
+        boxInfo.notFound.innerText = info.notFound;
+        boxInfo.total.innerText = info.total;
+    });
 
     const updateConfigView = () => {
         const config = state.config;
