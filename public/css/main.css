@@ -205,6 +205,9 @@ body, html {
     margin-right: 1px;
     background-color: #4CAF50;
 }
+.bim-item.active {
+    background-color: red;
+}
 
 .visualization-controls {
     display: flex;

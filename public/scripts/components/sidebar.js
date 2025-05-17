@@ -1,13 +1,17 @@
+import GlobalEvent from "../utils/event.js";
 import JML from "../utils/jml.js";
 
-const { h, render } = JML();
+const { h } = JML();
+
 const SideBar = (children) => {
+  let el = null;
+  GlobalEvent.on("fileUploaded", () => {
+    el.style.display = "none";
+  });
 
-    let el = null;
-
-    return h("section", { class: "sidebar", onCreate: e => (el = e.target) }, [
-        h("div", { class: "sidebar-content" }, children),
-    ]);
+  return h("section", { class: "sidebar", onCreate: (e) => (el = e.target) }, [
+    h("div", { class: "sidebar-content" }, children),
+  ]);
 };
 
 export default SideBar;

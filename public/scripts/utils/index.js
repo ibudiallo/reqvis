@@ -15,3 +15,8 @@ export const createArray = (size, defaultValue = 0) => {
 export const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+
+export const valueBetweenInt = (val, min, max) => {
+    return val >= min && val <= max;
+}

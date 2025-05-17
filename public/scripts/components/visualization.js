@@ -9,6 +9,8 @@ import * as Util from "../utils/index.js";
 const KB = 1024; // 1KB
 const MB = 1024 * KB; // 1MB
 
+const CHUNK_SIZE = 15 * MB; // How much data is processed at once.
+
 const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 400;
 const DAY = 24 * 60 * 60 ; // 1 day in seconds
@@ -32,7 +34,15 @@ const Visualization = () => {
     let timeBox = null;
     let controlsEl = null;
     let columnsBox = null;
-    let boxInfo = {};
+    let boxInfo = {
+        success: null,
+        redirect: null,
+        notFound: null,
+        total: null,
+        memory: null,
+        memoryMax: null,
+        memoryMod: null,
+    };
     const dataBlock = [];
     GlobalEvent.on("serverConfigUpdated", (config) => {
         state.config = config;
@@ -45,16 +55,32 @@ const Visualization = () => {
         timeBox.children[0].innerText = `Start: ${currentFile.startTime.toLocaleString()}`;
         timeBox.children[1].innerText = `End: ${currentFile.endTime.toLocaleString()}`;
         
-        // TODO: Remove this 
-        document.querySelector(".sidebar").style.display = "none";
         onDataReady();
     });
     GlobalEvent.on("processInfoUpdated", (info) => {
-        boxInfo.success.innerText = info.success;
-        boxInfo.redirect.innerText = info.redirect;
-        boxInfo.notFound.innerText = info.notFound;
-        boxInfo.total.innerText = info.total;
+        boxInfo.success.innerText = info.status.success;
+        boxInfo.redirect.innerText = info.status.redirect;
+        boxInfo.notFound.innerText = info.status.notFound;
+        boxInfo.total.innerText = info.status.total;
+        updateMemory(info.memory);
+        updateTime(info.index);
     });
+
+    const updateTime = (index) => {
+        const date = new Date(state.currentFile.startTime.getTime() + index * 1000)
+        console.log()
+        boxInfo.timeBox.innerText = date.toLocaleTimeString();
+    }
+
+    const updateMemory = (memory) => {
+        boxInfo.memory.innerText = Util.byteFormat(BASE_OS_MEMORY + memory);
+        boxInfo.memoryArray.map(item => {
+            item.classList.remove("active");
+        });
+        const totalmemory = state.config.memory.val * 1024 * 1024;
+        const percent = Math.ceil((memory / totalmemory ) * MEMORY_MODULES);
+        boxInfo.memoryArray.slice(0, Math.min(percent, 100)).map( item => item.classList.add("active"));
+    }
 
     const updateConfigView = () => {
         const config = state.config;
@@ -78,7 +104,7 @@ const Visualization = () => {
     const onDataReady = async () => {
         controlsEl.classList.remove("hidden");
         const width = controlsEl.childNodes[1].clientWidth; // TODO: need something better
-        const data = await getChunk(state.file, 0, 2 * MB); // 2MB chunk
+        const data = await getChunk(state.file, 0, CHUNK_SIZE);
         const blockSize = width / 3;
         const chunkPercent = data.length / state.currentFile.totalEntries;
         const blockCount = Math.ceil(blockSize * chunkPercent);
@@ -90,6 +116,13 @@ const Visualization = () => {
             data,
         })
         state.data = data;
+        boxInfo.memoryArray = (() => {
+            const arr = [];
+            boxInfo.memoryMod.childNodes.forEach((item, index) => {
+                arr.push(item);
+            });
+            return arr;
+        })();
         render(columnsBox, html);
         // initCanvas(blocks, max, startTime, timeFrame, chunkPercent);
     };

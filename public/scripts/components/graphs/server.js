@@ -1,6 +1,24 @@
 import GlobalEvent from "../../utils/event.js";
 import * as Util from "../../utils/index.js";
 
+const isBot = (ua) => {
+  return /bot|googlebot|bingbot|llurp|duckduckbot|baiduspider|yandexbot|sogou|exabot|ia_archiver|facebot|ia_archiver/gi.test(
+    ua.toLowerCase()
+  );
+};
+
+const PROCESS_INFO = {
+    status: {
+      success: 0,
+      error: 0,
+      redirect: 0,
+      notFound: 0,
+      total: 0,
+    },
+    memory: 0,
+    index: 0,
+  };
+
 const Request = function (ctx, info, target, w, h) {
   let x = 0;
   let y = Util.getRandomInt(0, h);
@@ -10,6 +28,14 @@ const Request = function (ctx, info, target, w, h) {
   const speed = Util.getRandomInt(10, 15);
   this.target = target || { x: w, y: y };
   this.direction = 1;
+
+  const userColors = {
+    human: "#06D",
+    bot: "green",
+  };
+
+  const userType = isBot(info.userAgent) ? "bot" : "human";
+
   this.update = () => {
     if (this.direction === 1) {
       const dx = this.target.x - x;
@@ -43,7 +69,7 @@ const Request = function (ctx, info, target, w, h) {
 
   this.render = () => {
     ctx.beginPath();
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = userColors[userType];
     ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fill();
   };
@@ -51,6 +77,7 @@ const Request = function (ctx, info, target, w, h) {
 
 const Workers = function (min, max, x, y) {
   const LIFETIME = 50;
+  const IDLETIME = 50;
   this.x = x;
   this.y = y;
   this.min = min;
@@ -76,27 +103,31 @@ const Workers = function (min, max, x, y) {
   };
 
   this.refresh = () => {
-    return;
-    if (this.workers.length >= this.min) {
-      // 28
-      const available = this.workers.filter(
-        (w) => w.busy === false && w.life < -20
-      ); // 7
-      const extra = this.workers.length - this.min; // 28 - 25 = 3
-      if (available.length > 5) {
-        // remove extra
-        this.workers.splice(this.min, extra);
-        return;
-      } else if (available.length < 3) {
-        const total = Math.min(5, this.max - this.workers.length);
+    const busyWorkers = this.workers.filter((w) => w.busy).length;
+    const idleWorkers = this.workers.filter((w) => !w.busy).length;
+
+    // Increase workers if busy workers exceed current capacity
+    if (busyWorkers >= this.workers.length) {
+      const additionalWorkers = Math.min(
+        this.max - this.workers.length,
+        busyWorkers - this.workers.length + 5
+      );
+      if (additionalWorkers > 0) {
         this.workers = [
           ...this.workers,
-          ...Util.createArray(total, {
+          ...Util.createArray(additionalWorkers, {
             busy: false,
             life: LIFETIME,
           }),
         ];
       }
+    }
+
+    // Remove idle workers over the minimum after some cycles
+    if (idleWorkers > this.workers.length - this.min) {
+      this.workers = this.workers.filter(
+        (w, i) => i < this.min || w.busy || w.life > -IDLETIME
+      );
     }
   };
 
@@ -121,7 +152,8 @@ const InstaBox = function (ctx, config, width, height) {
     workerMin: { val: minWork },
     workerMax: { val: maxWork },
   } = config;
-
+  const MEMORY_PER_IDLE_WORKER = 1 * 1024 * 1024; // MB
+  const MEMORY_PER_BUSY_WORKER = 2 * 1024 * 1024; // MB
   const workerWidth = 8;
   const workerHeight = 8;
   const padding = 2;
@@ -166,9 +198,12 @@ const InstaBox = function (ctx, config, width, height) {
   };
 
   this.update = () => {
+    let memory = 0; // memory is busy workers + memory per worker
     boxes.map((b) => {
       b.update();
+      memory += b.workers.length * MEMORY_PER_IDLE_WORKER + b.workers.filter((w) => w.busy).length * MEMORY_PER_BUSY_WORKER;
     });
+    PROCESS_INFO.memory = memory;
   };
 
   this.render = () => {
@@ -205,14 +240,6 @@ const Server = function (config, data, ctx, w, h) {
   this.w = w;
   this.h = h;
 
-  let processInfo = {
-    success: 0,
-    error: 0,
-    redirect: 0,
-    notFound: 0,
-    total: 0,
-  };
-
   let index = 0;
   let total = data.total;
 
@@ -231,27 +258,16 @@ const Server = function (config, data, ctx, w, h) {
       const req = new Request(ctx, r, null, this.w, this.h);
       metaBox.addRequest(req);
       requests.push(req);
-      switch (r.statusCode) {
-        case 200:
-          processInfo.success++;
-          break;
-        case 301:
-        case 302:
-        case 303:
-        case 304:
-        case 305:
-          processInfo.redirect++;
-          break;
-        case 404:
-          processInfo.notFound++;
-          break;
-        case 500:
-          processInfo.error++;
-          break;
-        default:
-          break;
+      if (Util.valueBetweenInt(r.statusCode, 100, 299)) {
+        PROCESS_INFO.status.success++;
+      } else if (Util.valueBetweenInt(r.statusCode, 300, 399)) {
+        PROCESS_INFO.status.redirect++;
+      } else if (r.statusCode === 404) {
+        PROCESS_INFO.status.notFound++;
+      } else {
+        PROCESS_INFO.status.error++;
       }
-      processInfo.total++;
+      PROCESS_INFO.status.total++;
     });
   };
 
@@ -264,6 +280,7 @@ const Server = function (config, data, ctx, w, h) {
     if (index >= total) {
       index = 0;
     }
+    PROCESS_INFO.index = index;
     const reqs = getData(index);
     if (reqs.length) {
       createRequests(reqs);
@@ -277,7 +294,7 @@ const Server = function (config, data, ctx, w, h) {
       }
     });
     metaBox.update();
-    GlobalEvent.emit("processInfoUpdated", processInfo);
+    GlobalEvent.emit("processInfoUpdated", PROCESS_INFO);
     index++;
   };
 
