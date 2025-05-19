@@ -267,6 +267,14 @@ body, html {
     width: 100%;
     z-index: 2;
 }
+.vis-controls-bar-inner--progress {
+    position: absolute;
+    width: var(--percent-width);
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: red;
+}
 .vis-controls-bar-columns {
     display: flex;
     align-items: baseline;

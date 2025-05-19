@@ -43,6 +43,8 @@ const Visualization = () => {
         memoryMax: null,
         memoryMod: null,
     };
+    let progressBarEl = null;
+    
     const dataBlock = [];
     GlobalEvent.on("serverConfigUpdated", (config) => {
         state.config = config;
@@ -67,9 +69,13 @@ const Visualization = () => {
     });
 
     const updateTime = (index) => {
-        const date = new Date(state.currentFile.startTime.getTime() + index * 1000)
-        console.log()
-        boxInfo.timeBox.innerText = date.toLocaleTimeString();
+        const startTime = state.currentFile.startTime.getTime();
+        const endTime = state.currentFile.endTime.getTime();
+        const currentTime = startTime + index * 1000
+        const date = new Date(currentTime)
+        const percent = ((index * 1000) / (endTime - startTime)) * 100;
+        progressBarEl.style.setProperty("--percent-width", `${percent.toFixed(2)}%`);
+        boxInfo.timeBox.innerText = date.toLocaleString();
     }
 
     const updateMemory = (memory) => {
@@ -123,8 +129,15 @@ const Visualization = () => {
             });
             return arr;
         })();
+        
         render(columnsBox, html);
-        // initCanvas(blocks, max, startTime, timeFrame, chunkPercent);
+        
+        progressBarEl.parentNode.addEventListener("click", (e) => {
+            const rect = progressBarEl.parentNode.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const percentage = (offsetX / rect.width) * 100;
+            GlobalEvent.emit("seekProgress", percentage);
+        });
     };
 
     const generateBlocks = (data, blockCount, timeFrame) => {
@@ -258,7 +271,11 @@ const Visualization = () => {
                         }}, "Start Visualization"),
                     ),
                     h("div", { class: "vis-controls-bar"}, [
-                        h("div", { class: "vis-controls-bar-inner" }, []),
+                        h("div", { class: "vis-controls-bar-inner" }, 
+                            h("div", { class: "vis-controls-bar-inner--progress", style: "--percent-width: 0%",
+                                onCreate: (e) => (progressBarEl = e.target)
+                            }, [])
+                        ),
                         h("div", { class: "vis-controls-bar-columns", onCreate: (e) => columnsBox = e.target}, []),
                     ]),
                 ]),
