@@ -223,15 +223,18 @@ const Visualization = () => {
                         ]),
                         h("div", { class: "box-info box-it" }, [
                             h("p", { class: "" }, [
-                                h("span", { class: "box-info-name" }, "Success: "),
+                                h("span", { class: "box-info-name box-info-name--suc" }, "2xx"),
+                                " ",
                                 h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.success = e.target) }, "0"),
                             ]),
                             h("p", { class: "" }, [
-                                h("span", { class: "box-info-name" }, "Redirect: "),
+                                h("span", { class: "box-info-name box-info-name--red" }, "3xx"),
+                                " ",
                                 h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.redirect = e.target) }, "0"),
                             ]),
                             h("p", { class: "" }, [
-                                h("span", { class: "box-info-name" }, "Not Found: "),
+                                h("span", { class: "box-info-name box-info-name--not" }, "4xx"),
+                                " ",
                                 h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.notFound = e.target) }, "0"),
                             ]),
                             h("p", { class: "" }, [

@@ -181,6 +181,11 @@ body, html {
     min-width: 200px;
     border-radius: 10px;
 }
+.box-info.box-it p {
+    margin-bottom: 5px;
+    padding: 6px;
+    font-family: monospace;
+}
 .box-info.memory {
     padding: 6px;
     width: 100%;
@@ -189,7 +194,31 @@ body, html {
 .box-info-name {
     font-weight: bold;
     margin-bottom: 10px;
-    color: #4CAF50;
+}
+.box-info-name--suc {
+    padding: 3px 6px;
+    border-radius: 3px;
+    background-color: #b8f0c9;
+    color: #0b490e;
+}
+.box-info-name--red {
+    padding: 3px 6px;
+    border-radius: 3px;
+    background-color: #8586e4;
+    color: #212252;
+;
+}
+.box-info-name--not {
+    padding: 3px 6px;
+    border-radius: 3px;
+    background-color: #ebd8b3;
+    color: #774415;
+}
+.box-info-name--err {
+    padding: 3px 6px;
+    border-radius: 3px;
+    background-color: #ebb3b3;
+    color: #771515;
 }
 .box-info-modules {
     display: flex;

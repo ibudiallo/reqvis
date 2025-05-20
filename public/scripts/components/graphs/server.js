@@ -26,7 +26,7 @@ const PROCESS_INFO = {
 
 const Request = function (ctx, info, target, w, h) {
   let x = 0;
-  let y = Util.getRandomInt(0, h);
+  let y = Util.getRandomInt(0, h - 32);
   const startX = x;
   const startY = y;
   this.done = false;
@@ -45,7 +45,7 @@ const Request = function (ctx, info, target, w, h) {
 
   const userType = isBot(info.userAgent) ? USER_TYPE.BOT : USER_TYPE.HUMAN;
   
-  const statusType = ((code) => {
+  this.statusType = ((code) => {
     if (code >= 200 && code < 300) {
       return "2xx";
     } else if (code >= 300 && code < 400) {
@@ -69,13 +69,13 @@ const Request = function (ctx, info, target, w, h) {
     "4xx": "drop",
     "5xx": "blow",
   }
-  const bounceType = bounces[statusType] || "normal";
+  const bounceType = bounces[this.statusType] || "normal";
 
   this.getColor = () => {
     if (this.direction === 1) {
       return userColors[userType];
     }
-    return statusColor[statusType];
+    return statusColor[this.statusType];
   };
 
   let currentColor = this.getColor();
@@ -136,8 +136,6 @@ const Request = function (ctx, info, target, w, h) {
       this.done = true;
     }
   }
-
-  
 
   const moveNormal = () => {
     const dx = this.target.x - x;
@@ -291,6 +289,7 @@ const InstaBox = function (ctx, config, width, height) {
   const padding = 2;
   const h = Math.floor(height / 2 / totalInstance);
   const w = Math.floor(width / 3);
+  const queuedRequests = [];
   const boxes = Util.createArray(totalInstance).map((_, i) => {
     return new Workers(
       minWork,
@@ -308,11 +307,34 @@ const InstaBox = function (ctx, config, width, height) {
         x: box.x + 2,
         y: Util.getRandomInt(box.y, box.y + h),
       };
+      req.ready = true;
     } else {
       // No available box, handle accordingly
-      //console.log("No available box for request", req);
+      req.ready = false;
     }
+    queuedRequests.push(req);
   };
+
+  const drawQueueBox = () => {
+    ctx.beginPath();
+    let x = 2;
+    let y = height - 24;
+    ctx.font = "bold 14px Arial";
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#fff";
+    ctx.fillText("Queue", x + 10, y - 16);
+    ctx.strokeStyle = "#fff";
+    ctx.strokeRect(x, y, width - 4, 22);
+    queuedRequests.filter((r) => !r.ready).map((r, i) => {
+      ctx.fillStyle = "green";
+      ctx.fillRect(
+        x + 2 + i * (workerWidth + padding),
+        y + 2,
+        workerWidth,
+        workerHeight
+      );
+    });
+  }
 
   let currentBoxIndex = 0;
   this.getAvailableBox = () => {
@@ -338,6 +360,20 @@ const InstaBox = function (ctx, config, width, height) {
         b.workers.filter((w) => w.busy).length * MEMORY_PER_BUSY_WORKER;
     });
     PROCESS_INFO.memory = memory;
+    queuedRequests.map((r, i) => {
+      if (r.ready) {
+        r.update();
+      }
+      if (r.done) {
+        queuedRequests.splice(i, 1);
+      }
+    });
+    if (this.getAvailableBox()) {
+      const req = queuedRequests.find((r) => r.ready === false);
+      if (req) {
+      req.ready = true;
+      }
+    }
   };
 
   this.render = () => {
@@ -366,6 +402,12 @@ const InstaBox = function (ctx, config, width, height) {
         }
       }
     });
+
+    queuedRequests.map((r) => {
+      r.render();
+    });
+
+    drawQueueBox();
   };
 };
 
@@ -375,7 +417,11 @@ const Server = function (config, data, ctx, w, h) {
   this.h = h;
 
   let index = 0;
-  let total = data.length;
+  let total = (() => {
+      const firstDateTime = data[0].dateTime.getTime() / 1000;
+      const lastDateTime = data[data.length - 1].dateTime.getTime() / 1000;
+      return lastDateTime - firstDateTime;
+  })();
 
   const requests = [];
   const first = data[0];
@@ -390,25 +436,31 @@ const Server = function (config, data, ctx, w, h) {
   GlobalEvent.on("seekProgress", (percentage) => {
     const firstDateTime = first.dateTime.getTime();
     const lastDateTime = data[data.length - 1].dateTime.getTime();
-    const totalDuration = lastDateTime - firstDateTime;
+    const totalDuration = (lastDateTime - firstDateTime) / 1000; // in seconds
     const newIndex = Math.floor(totalDuration * (percentage / 100));
-    index = Math.floor(newIndex / 1000);
-    console.log("seekProgress", newIndex, percentage);
+    index = Math.floor(newIndex);
   });
 
   const createRequests = (reqs) => {
     reqs.map((r) => {
       const req = new Request(ctx, r, null, this.w, this.h);
       metaBox.addRequest(req);
-      requests.push(req);
-      if (Util.valueBetweenInt(r.statusCode, 100, 299)) {
-        PROCESS_INFO.status.success++;
-      } else if (Util.valueBetweenInt(r.statusCode, 300, 399)) {
-        PROCESS_INFO.status.redirect++;
-      } else if (r.statusCode === 404) {
-        PROCESS_INFO.status.notFound++;
-      } else {
-        PROCESS_INFO.status.error++;
+      switch(req.statusType) {
+        case "2xx":
+          PROCESS_INFO.status.success++;
+          break;
+        case "3xx":
+          PROCESS_INFO.status.redirect++;
+          break;
+        case "4xx":
+          PROCESS_INFO.status.notFound++;
+          break;
+        case "5xx":
+          PROCESS_INFO.status.error++;
+          break;
+        default:
+          PROCESS_INFO.status.success++;
+          break;
       }
       PROCESS_INFO.status.total++;
     });
@@ -428,14 +480,6 @@ const Server = function (config, data, ctx, w, h) {
     if (reqs.length) {
       createRequests(reqs);
     }
-    requests.map((r) => {
-      r.update();
-    });
-    requests.map((r, i) => {
-      if (r.done) {
-        requests.splice(i, 1);
-      }
-    });
     metaBox.update();
     GlobalEvent.emit("processInfoUpdated", PROCESS_INFO);
     index++;
@@ -452,9 +496,6 @@ const Server = function (config, data, ctx, w, h) {
     ctx.clearRect(0, 0, this.w, this.h);
     ctx.fillStyle = "#2d3436";
     ctx.fillRect(0, 0, this.w, this.h);
-    requests.map((r) => {
-      r.render();
-    });
     metaBox.render();
   };
 };
