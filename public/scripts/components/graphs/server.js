@@ -26,7 +26,7 @@ const PROCESS_INFO = {
 
 const Request = function (ctx, info, target, w, h) {
   let x = 0;
-  let y = Util.getRandomInt(0, h - 32);
+  let y = Util.getRandomInt(0, h);
   const startX = x;
   const startY = y;
   this.done = false;
@@ -412,6 +412,8 @@ const InstaBox = function (ctx, config, width, height) {
 };
 
 const Server = function (config, data, ctx, w, h) {
+
+  const MARGIN = 64;
   let isPaused = null;
   this.w = w;
   this.h = h;
@@ -423,7 +425,6 @@ const Server = function (config, data, ctx, w, h) {
       return lastDateTime - firstDateTime;
   })();
 
-  const requests = [];
   const first = data[0];
 
   const metaBox = new InstaBox(ctx, config, w, h);
@@ -443,7 +444,7 @@ const Server = function (config, data, ctx, w, h) {
 
   const createRequests = (reqs) => {
     reqs.map((r) => {
-      const req = new Request(ctx, r, null, this.w, this.h);
+      const req = new Request(ctx, r, null, this.w, this.h - MARGIN);
       metaBox.addRequest(req);
       switch(req.statusType) {
         case "2xx":
