@@ -13,7 +13,6 @@ const CHUNK_SIZE = 15 * MB; // How much data is processed at once.
 
 const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 400;
-const DAY = 24 * 60 * 60 ; // 1 day in seconds
 
 const MEMORY_MODULES = 100;
 let BASE_OS_MEMORY = 0; // 50% when less 
@@ -116,7 +115,11 @@ const Visualization = () => {
         const blockSize = width / 3;
         const chunkPercent = data.length / state.currentFile.totalEntries;
         const blockCount = Math.ceil(blockSize * chunkPercent);
-        const timeFrame = DAY * chunkPercent;
+
+        const startTime = data[0].dateTime.getTime() / 1000;
+        const endTime = data[data.length - 1].dateTime.getTime() / 1000;
+        const totalTime = endTime - startTime;
+        const timeFrame = totalTime * chunkPercent;
         
         const html = generateBlocks(data, blockCount, timeFrame);
         dataBlock.push({
