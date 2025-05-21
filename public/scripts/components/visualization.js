@@ -102,7 +102,9 @@ const Visualization = () => {
             const delta = currentTime - prevTime;
             state.stack.update(delta)
             state.stack.render();
+            //setTimeout(() => {
             requestAnimationFrame(() => tick(currentTime));
+            //}, 100);
         };
         tick(performance.now());
     };
@@ -205,7 +207,7 @@ const Visualization = () => {
         return h("section", { class: "visualization" }, [
             h("h2", { class: "menu-title" }, "Visualization"),
             h("div", { class: "visualization-content" }, [
-                h("div", {}, [
+                h("div", { class: "visualization-content-hdr"}, [
                     h("h3", { onCreate: (e) => (el = e.target)}, "Server Info"),
                 ]),
                 h("div", { class: "visualization-canvas" }, [

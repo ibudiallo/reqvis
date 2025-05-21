@@ -161,6 +161,12 @@ body, html {
 .visualization-content {
     position: relative;
 }
+.visualization-content-hdr h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+    line-height: 2em;
+}
 
 .visualization-canvas {
     display: flex;

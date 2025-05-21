@@ -26,6 +26,13 @@ export const InstaBox = function (ctx, config, width, height) {
     );
   });
 
+  let health = 0;
+  this.hit = () => {
+    health++;
+  };
+  let wiggle = 0;
+  let totalQueued = 0;
+
   this.addRequest = (req) => {
     const box = this.getAvailableBox();
     if (box) {
@@ -35,6 +42,7 @@ export const InstaBox = function (ctx, config, width, height) {
         y: Util.getRandomInt(box.y, box.y + h),
       };
       req.ready = true;
+      this.hit();
     } else {
       // No available box, handle accordingly
       req.ready = false;
@@ -49,7 +57,7 @@ export const InstaBox = function (ctx, config, width, height) {
     ctx.font = "bold 14px Arial";
     ctx.textAlign = "left";
     ctx.fillStyle = "#fff";
-    ctx.fillText("Queue", x + 10, y - 16);
+    ctx.fillText(`Queue: ${totalQueued.toLocaleString()}`, x + 10, y - 16);
     ctx.strokeStyle = "#fff";
     ctx.strokeRect(x, y, width - 4, 22);
     queuedRequests
@@ -84,6 +92,10 @@ export const InstaBox = function (ctx, config, width, height) {
     return memoryUse;
   };
 
+  this.getRequestsCount = () => {
+    return queuedRequests.length;
+  };
+
   this.update = () => {
     let memory = 0; // memory is busy workers + memory per worker
     boxes.map((b) => {
@@ -101,19 +113,38 @@ export const InstaBox = function (ctx, config, width, height) {
         queuedRequests.splice(i, 1);
       }
     });
-    if (this.getAvailableBox()) {
+
+    totalQueued = queuedRequests.filter((r) => r.ready === false).length;
+
+    // Check if a worker is available in the boxes
+    // if so ready the request
+    // and set the target position to the box
+    // this helps clear the queue
+    let box = null;
+    while ((box = this.getAvailableBox())) {
+      if (!box) {
+        break;
+      }
       const req = queuedRequests.find((r) => r.ready === false);
       if (req) {
         req.ready = true;
+        req.target = {
+          x: box.x + 2,
+          y: Util.getRandomInt(box.y, box.y + h),
+        };
+        this.hit();
+      } else {
+        break;
       }
     }
+    wiggle = 0; // health % 2 === 0 ? 1 : -1;
   };
 
   this.render = () => {
     ctx.beginPath();
     boxes.map((b) => {
       ctx.strokeStyle = "#fff";
-      ctx.strokeRect(b.x, b.y, w, h);
+      ctx.strokeRect(wiggle + b.x, b.y, w, h);
       const totalBoxes = b.workers.length;
       const cols = Math.floor(w / (workerWidth + padding));
       const rows = Math.ceil(totalBoxes / cols);
@@ -125,7 +156,7 @@ export const InstaBox = function (ctx, config, width, height) {
           if (count >= totalBoxes) break;
           ctx.fillStyle = busy > 0 ? "red" : "green";
           ctx.fillRect(
-            b.x + 2 + i * (workerWidth + padding),
+            wiggle + b.x + 2 + i * (workerWidth + padding),
             b.y + 2 + j * (workerHeight + padding),
             workerWidth,
             workerHeight
@@ -137,7 +168,10 @@ export const InstaBox = function (ctx, config, width, height) {
     });
 
     queuedRequests.map((r) => {
-      r.render();
+      // only render if the request is ready
+      if (r.ready) {
+        r.render();
+      }
     });
 
     drawQueueBox();
