@@ -1,8 +1,8 @@
 import GlobalEvent from "../utils/event.js";
 import JML from "../utils/jml.js";
 import Processor from "../utils/processor.js";
-import Demo from "./graphs/demo.js";
-import Server from "./graphs/server.js";
+import Demo from "./visuals/demo.js";
+import Server from "./visuals/server.js";
 import StateStack from "../utils/stack.js";
 import * as Util from "../utils/index.js";
 
