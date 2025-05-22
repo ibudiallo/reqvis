@@ -1,331 +1,333 @@
 /* Reset some default styles */
-body, html {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-
 .page-header {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    background-color: #4CAF50;
-    color: white;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #4caf50;
+  color: white;
 }
 
 .page-header .logo img {
-    height: 50px;
-    margin-right: 1rem;
+  height: 50px;
+  margin-right: 1rem;
 }
 .page-hdr__title h1 {
-    font-size: 2rem;
-    margin: 0;
-    color: #fff;
-    line-height: 1.1em;
+  font-size: 2rem;
+  margin: 0;
+  color: #fff;
+  line-height: 1.1em;
 }
 .page-hdr__title p {
-    margin: 0;
-    font-size: 1rem;
+  margin: 0;
+  font-size: 1rem;
 }
 
 .page-main {
-    padding: 2rem;
-    background-color: #fff;
-    min-height: 400px;
-    position: relative;
-    overflow: hidden;
+  padding: 2rem;
+  background-color: #fff;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+  max-width: 1275px;
+  margin: 0 auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .page-footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #333;
-    color: white;
-    font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+  font-size: 0.9rem;
 }
 
 .page-footer a {
-    color: #4CAF50;
-    text-decoration: none;
+  color: #4caf50;
+  text-decoration: none;
 }
 
 .page-footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /** Side Bar **/
 .sidebar {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    height: 100%;
-    overflow-y: hidden;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    opacity: .9;
-    height: 100%;
-    transition: height 0.3s ease-in-out;
-    border-radius: 10px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  height: 100%;
+  overflow-y: hidden;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
+  height: 100%;
+  transition: height 0.3s ease-in-out;
+  border-radius: 10px;
 }
 .sidebar.hidden {
-    display: block;
-    height: 50px;
+  display: block;
+  height: 50px;
 }
 .sidebar ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 .sidebar-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 .menu-title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #4CAF50;
-    margin-top: 1em;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #4caf50;
+  margin-top: 1em;
 }
 .sidebar-content {
-    display: flex;
+  display: flex;
 }
 .sidebar-content > section {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 .progress-groups {
-    display: table;
+  display: table;
 }
 .progress-group {
-    display: table-row;
-    margin: 3px 0;
+  display: table-row;
+  margin: 3px 0;
 }
 .progress-group label,
 .progress-group input,
 .progress-group span {
-    display: table-cell;
-    margin: 12px 6px;
+  display: table-cell;
+  margin: 12px 6px;
 }
 
 /* Upload section **/
 .upload-section {
-    text-align: center;
-    margin: 20px 0;
+  text-align: center;
+  margin: 20px 0;
 }
 .upload-area {
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    cursor: pointer;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s;
-    color: #333;
-    margin: 20px 0;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s;
+  color: #333;
+  margin: 20px 0;
 }
 .upload-area.hasFile .upload-text {
-    display: none;
+  display: none;
 }
 .upload-area .upload-complete {
-    display: none;
+  display: none;
 }
 .upload-area.hasFile .upload-complete {
-    display: block;
+  display: block;
 }
 .upload-area:hover,
 .upload-area.active {
-    background-color: #e6e6e6;
+  background-color: #e6e6e6;
 }
 .upload-link {
-    color: #007BFF;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .file-info p {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 .file-start {
-    display: none;
+  display: none;
 }
 .file-start.show {
-    display: block;
+  display: block;
 }
 
 .visualization {
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .visualization-content {
-    position: relative;
+  position: relative;
 }
 .visualization-content-hdr h3 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
-    line-height: 2em;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+  line-height: 2em;
 }
 
 .visualization-canvas {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .visualization-canvas-box {
-    min-width: 800px;
-    margin-right: 12px;
+  min-width: 800px;
+  margin-right: 12px;
 }
 .box-info {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .box-info.box-it {
-    border: 1px solid #4CAF50;
-    background-color: #f9f9f9;
-    padding: 6px;
-    width: 100%;
-    min-width: 200px;
-    border-radius: 10px;
+  border: 1px solid #4caf50;
+  background-color: #f9f9f9;
+  padding: 6px;
+  width: 100%;
+  min-width: 200px;
+  border-radius: 10px;
 }
 .box-info.box-it p {
-    margin-bottom: 5px;
-    padding: 6px;
-    font-family: monospace;
+  margin-bottom: 5px;
+  padding: 6px;
+  font-family: monospace;
 }
 .box-info.memory {
-    padding: 6px;
-    width: 100%;
-    min-width: 400px;
+  padding: 6px;
+  width: 100%;
+  min-width: 400px;
 }
 .box-info-name {
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 .box-info-name--suc {
-    padding: 3px 6px;
-    border-radius: 3px;
-    background-color: #b8f0c9;
-    color: #0b490e;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background-color: #b8f0c9;
+  color: #0b490e;
 }
 .box-info-name--red {
-    padding: 3px 6px;
-    border-radius: 3px;
-    background-color: #8586e4;
-    color: #212252;
-;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background-color: #8586e4;
+  color: #212252;
 }
 .box-info-name--not {
-    padding: 3px 6px;
-    border-radius: 3px;
-    background-color: #ebd8b3;
-    color: #774415;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background-color: #ebd8b3;
+  color: #774415;
 }
 .box-info-name--err {
-    padding: 3px 6px;
-    border-radius: 3px;
-    background-color: #ebb3b3;
-    color: #771515;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background-color: #ebb3b3;
+  color: #771515;
 }
 .box-info-modules {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .box-info-modules-cols {
-    height: 36px;
+  height: 36px;
 }
 .bim-item {
-    display: inline-block;
-    height: 100%;
-    width: 2px;
-    margin-right: 1px;
-    background-color: #4CAF50;
+  display: inline-block;
+  height: 100%;
+  width: 2px;
+  margin-right: 1px;
+  background-color: #4caf50;
 }
 .bim-item.active {
-    background-color: red;
+  background-color: red;
 }
 
 .visualization-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #121212;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #121212;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .visualization-controls.hidden {
-    display: none;
+  display: none;
 }
 .vis-controls-button {
-    background-color: #333;
-    border-radius: 50%;
+  background-color: #333;
+  border-radius: 50%;
 }
 .vis-controls-button button {
-    width: 32px;
-    height: 32px;
-    display: block;
-    line-height: 32px;
-    text-indent: 42px;
-    overflow: hidden;
-    border: none;
-    background: none;
+  width: 32px;
+  height: 32px;
+  display: block;
+  line-height: 32px;
+  text-indent: 42px;
+  overflow: hidden;
+  border: none;
+  background: none;
 }
 .vis-controls-button button.play {
-    background: url(../image/play.svg) no-repeat center center;
-    background-size: 32px 32px;
+  background: url(../image/play.svg) no-repeat center center;
+  background-size: 32px 32px;
 }
 .vis-controls-button button.pause {
-    background: url(../image/pause.svg) no-repeat center center;
-    background-size: 32px 32px;
+  background: url(../image/pause.svg) no-repeat center center;
+  background-size: 32px 32px;
 }
 .visualization-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 .vis-controls-bar {
-    position: relative;
-    margin-left: 10px;
-    width: 100%;
-    height: 32px;
+  position: relative;
+  margin-left: 10px;
+  width: 100%;
+  height: 32px;
 }
 .vis-controls-bar-inner {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-color: #777;
-    transform: translateY(-50%);
-    width: 100%;
-    z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #777;
+  transform: translateY(-50%);
+  width: 100%;
+  z-index: 2;
 }
 .vis-controls-bar-inner--progress {
-    position: absolute;
-    width: var(--percent-width);
-    top: 0;
-    left: 0;
-    height: 100%;
-    background-color: red;
+  position: absolute;
+  width: var(--percent-width);
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: red;
 }
 .vis-controls-bar-columns {
-    display: flex;
-    align-items: baseline;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+  display: flex;
+  align-items: baseline;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 .vis-controls-bar-columns .block {
-    background-color: #4CAF50;
-    height: var(--size);
-    width: 3px;
-    top: 0;
-    left: 0;
-    transition: width 0.3s ease-in-out;
-    margin-right: 1px;
+  background-color: #4caf50;
+  height: var(--size);
+  width: 3px;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease-in-out;
+  margin-right: 1px;
 }

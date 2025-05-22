@@ -64,8 +64,8 @@ const UploadComponent = () => {
     const createComponent = () => {
         return h("section", { class: "upload-dection" }, [
             h("h2", { class: "menu-title" }, "Upload Server Logs"),
-            uploadArea,
             fileInfoArea,
+            uploadArea,
             h("input", {
                 type: "file",
                 id: "fileInput",

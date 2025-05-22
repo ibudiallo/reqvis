@@ -132,6 +132,7 @@ export const InstaBox = function (ctx, config, width, height) {
           x: box.x + 2,
           y: Util.getRandomInt(box.y, box.y + h),
         };
+        box.handleRequest();
         this.hit();
       } else {
         break;
