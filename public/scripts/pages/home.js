@@ -3,6 +3,7 @@ import ServerConfigComponent from "../components/serverconf.js";
 import UploadComponent from "../components/uploader.js";
 import SideBar from "../components/sidebar.js";
 import Visualization from "../components/visualization.js";
+import ErrorComponent from "../components/error.js";
 import GlobalEvent from "../utils/event.js";
 const { h, render } = JML();
 
@@ -19,6 +20,7 @@ const Home = async (reqPath) => {
     const serverConfigComponent = ServerConfigComponent().createServerConfigComponent(serverConfig);
 
     const html = h("div", { class: "home" }, [
+        ErrorComponent("hello"),
         SideBar([
             serverConfigComponent,
             UploadComponent().createComponent(),

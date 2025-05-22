@@ -28,9 +28,8 @@ const Visualization = () => {
     memory: null,
     isPlaying: false,
   };
-  let cv = {};
-  let el = null;
-  let timeBox = null;
+  let canvas = {};
+  let titleHdr = null;
   let controlsEl = null;
   let columnsBox = null;
   let boxInfo = {
@@ -53,8 +52,6 @@ const Visualization = () => {
   GlobalEvent.on("fileUploaded", async (currentFile) => {
     state.file = currentFile.file;
     state.currentFile = currentFile;
-    timeBox.children[0].innerText = `Start: ${currentFile.startTime.toLocaleString()}`;
-    timeBox.children[1].innerText = `End: ${currentFile.endTime.toLocaleString()}`;
 
     onDataReady();
   });
@@ -82,26 +79,26 @@ const Visualization = () => {
 
   const updateMemory = (memory) => {
     boxInfo.memory.innerText = Util.byteFormat(BASE_OS_MEMORY + memory);
-    boxInfo.memoryArray.map((item) => {
+    boxInfo.memoryArray.forEach((item) => {
       item.classList.remove("active");
     });
     const totalmemory = state.config.memory.val * 1024 * 1024;
     const percent = Math.ceil((memory / totalmemory) * MEMORY_MODULES);
     boxInfo.memoryArray
       .slice(0, Math.min(percent, 100))
-      .map((item) => item.classList.add("active"));
+      .forEach((item) => item.classList.add("active"));
   };
 
   const updateConfigView = () => {
     const config = state.config;
-    el.innerText = `Server Name: ${config.serverName.val}`;
+    titleHdr.innerText = `Server Name: ${config.serverName.val}`;
     boxInfo.memoryMax.innerText = Util.byteFormat(
       config.memory.val * 1024 * 1024
     );
   };
 
   const onPageReady = () => {
-    const demo = new Demo(cv.ctx, SCREEN_WIDTH, SCREEN_HEIGHT, 5);
+    const demo = new Demo(canvas.ctx, SCREEN_WIDTH, SCREEN_HEIGHT, 5);
     state.stack.push(demo);
     const tick = (prevTime) => {
       const currentTime = performance.now();
@@ -118,7 +115,13 @@ const Visualization = () => {
   const onDataReady = async () => {
     controlsEl.classList.remove("hidden");
     const width = controlsEl.childNodes[1].clientWidth; // TODO: need something better
-    const data = await getChunk(state.file, 0, CHUNK_SIZE);
+    let data = [];
+    try {
+        data = await getChunk(state.file, 0, CHUNK_SIZE);
+    } catch (e) {
+        GlobalEvent.emit("error", `Error reading file: ${e.message}`);
+        return;
+    }
     const blockSize = width / 3;
     const chunkPercent = data.length / state.currentFile.totalEntries;
     const blockCount = Math.ceil(blockSize * chunkPercent);
@@ -216,7 +219,7 @@ const Visualization = () => {
       server = new Server(
         state.config,
         state.data,
-        cv.ctx,
+        canvas.ctx,
         SCREEN_WIDTH,
         SCREEN_HEIGHT
       );
@@ -228,91 +231,113 @@ const Visualization = () => {
     server.onPause();
   };
 
+  const views = {
+    createCanvas: () => {
+        return h("div", { class: "visualization-canvas-box" }, [
+            h("canvas", { id: "visualization-canvas", width: 600, height: 400, onCreate: (e) => {
+                canvas.el = e.target;
+                canvas.ctx = canvas.el.getContext("2d");
+                onPageReady();
+            } }, []),
+        ]);
+    },
+
+    createControls: () => {
+        return h("div", { class: "visualization-controls hidden" , onCreate: (e) => (controlsEl = e.target)}, [
+            h("div", { class: "vis-controls-button"},
+                h("button", { class: "play", onclick: (e) => {
+                    state.isPlaying = !state.isPlaying;
+                    if (state.isPlaying) {
+                        GlobalEvent.emit("startVisualization");
+                        runServer();
+                    } else {
+                        GlobalEvent.emit("pauseVisualization");
+                        stopServer();
+                    }
+                    e.target.classList.toggle("pause");
+                    e.target.classList.toggle("play");
+                }}, "Start Visualization"),
+            ),
+            h("div", { class: "vis-controls-bar"}, [
+                h("div", { class: "vis-controls-bar-inner" }, 
+                    h("div", { class: "vis-controls-bar-inner--progress", style: "--percent-width: 0%",
+                        onCreate: (e) => (progressBarEl = e.target)
+                    }, [])
+                ),
+                h("div", { class: "vis-controls-bar-columns", onCreate: (e) => columnsBox = e.target}, []),
+            ]),
+        ]);
+    },
+
+    createServerInfoBox() {
+        return h("div", { class: "visualization-server-box" }, [
+            this.createTimeBox(),
+            this.createRequestInfoBox(),
+            this.createMemoryBox(),
+        ]);
+    },
+
+    createTimeBox() {
+        return h("p", { class: "box-info" }, [
+            h("span", { class: "box-info-name" }, "Time: "),
+            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.timeBox = e.target)  }, "00:00:00"),
+        ]);
+    },
+
+    createRequestInfoBox() {
+        return h("div", { class: "box-info box-it" }, [
+            h("p", { class: "" }, [
+                h("span", { class: "box-info-name box-info-name--suc" }, "2xx"),
+                " ",
+                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.success = e.target) }, "0"),
+            ]),
+            h("p", { class: "" }, [
+                h("span", { class: "box-info-name box-info-name--red" }, "3xx"),
+                " ",
+                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.redirect = e.target) }, "0"),
+            ]),
+            h("p", { class: "" }, [
+                h("span", { class: "box-info-name box-info-name--not" }, "4xx"),
+                " ",
+                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.notFound = e.target) }, "0"),
+            ]),
+            h("p", { class: "" }, [
+                h("span", { class: "box-info-name" }, "Total: "),
+                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.total = e.target) }, "0"),
+            ]),
+        ]);
+    },
+
+    createMemoryBox() {
+        return h("div", { class: "box-info memory" }, [
+            h("div", { class: "box-info-txt" }, [
+                h("span", { class: "box-info-name" }, "Memory: "),
+                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.memory = e.target) }, "0"),
+            ]),
+            h("div", { class: "box-info-modules"}, [
+                h("div", { class: "box-info-modules-cols", onCreate: (e) => (boxInfo.memoryMod = e.target) }, 
+                    Util.createArray(MEMORY_MODULES).map((i) => {
+                        return h("span", { class: "bim-item"}, null)
+                    })
+                ),
+                h("div", { class: "box-info-modules-cols", onCreate: (e) => (boxInfo.memoryMax = e.target) }, "0" ),
+            ])
+        ]);
+    },
+  }
+
   const createComponent = () => {
     return h("section", { class: "visualization" }, [
         h("h2", { class: "menu-title" }, "Visualization"),
         h("div", { class: "visualization-content" }, [
             h("div", { class: "visualization-content-hdr"}, [
-                h("h3", { onCreate: (e) => (el = e.target)}, "Server Info"),
+                h("h3", { onCreate: (e) => (titleHdr = e.target)}, "Server Info"),
             ]),
             h("div", { class: "visualization-canvas" }, [
-                h("div", { class: "visualization-canvas-box" }, [
-                    h("canvas", { id: "visualization-canvas", width: 600, height: 400, onCreate: (e) => {
-                        cv.el = e.target;
-                        cv.ctx = cv.el.getContext("2d");
-                        onPageReady();
-                    } }, []),
-                ]),
-                h("div", { class: "visualization-server-box" }, [
-                    h("p", { class: "box-info" }, [
-                        h("span", { class: "box-info-name" }, "Time: "),
-                        h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.timeBox = e.target)  }, "00:00:00"),
-                    ]),
-                    h("div", { class: "box-info box-it" }, [
-                        h("p", { class: "" }, [
-                            h("span", { class: "box-info-name box-info-name--suc" }, "2xx"),
-                            " ",
-                            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.success = e.target) }, "0"),
-                        ]),
-                        h("p", { class: "" }, [
-                            h("span", { class: "box-info-name box-info-name--red" }, "3xx"),
-                            " ",
-                            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.redirect = e.target) }, "0"),
-                        ]),
-                        h("p", { class: "" }, [
-                            h("span", { class: "box-info-name box-info-name--not" }, "4xx"),
-                            " ",
-                            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.notFound = e.target) }, "0"),
-                        ]),
-                        h("p", { class: "" }, [
-                            h("span", { class: "box-info-name" }, "Total: "),
-                            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.total = e.target) }, "0"),
-                        ]),
-                    ]),
-                    h("div", { class: "box-info memory" }, [
-                        h("div", { class: "box-info-txt" }, [
-                            h("span", { class: "box-info-name" }, "Memory: "),
-                            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.memory = e.target) }, "0"),
-                        ]),
-                        h("div", { class: "box-info-modules"}, [
-                            h("div", { class: "box-info-modules-cols", onCreate: (e) => (boxInfo.memoryMod = e.target) }, 
-                                Util.createArray(MEMORY_MODULES).map((i) => {
-                                    return h("span", { class: "bim-item"}, null)
-                                })
-                            ),
-                            h("div", { class: "box-info-modules-cols", onCreate: (e) => (boxInfo.memoryMax = e.target) }, "0" ),
-                        ])
-                    ]),
-                ]),
+                views.createCanvas(),
+                views.createServerInfoBox(),
             ]),
-            h("div", { class: "visualization-controls hidden" , onCreate: (e) => (controlsEl = e.target)}, [
-                h("div", { class: "vis-controls-button"},
-                    h("button", { class: "play", onclick: (e) => {
-                        state.isPlaying = !state.isPlaying;
-                        if (state.isPlaying) {
-                            GlobalEvent.emit("startVisualization");
-                            runServer();
-                        } else {
-                            GlobalEvent.emit("pauseVisualization");
-                            stopServer();
-                        }
-                        e.target.classList.toggle("pause");
-                        e.target.classList.toggle("play");
-                    }}, "Start Visualization"),
-                ),
-                h("div", { class: "vis-controls-bar"}, [
-                    h("div", { class: "vis-controls-bar-inner" }, 
-                        h("div", { class: "vis-controls-bar-inner--progress", style: "--percent-width: 0%",
-                            onCreate: (e) => (progressBarEl = e.target)
-                        }, [])
-                    ),
-                    h("div", { class: "vis-controls-bar-columns", onCreate: (e) => columnsBox = e.target}, []),
-                ]),
-            ]),
-            h("div", { class: "visualization-info", onCreate: (e) => (timeBox = e.target)}, [
-                h("div", { class: "vis-start-time"}, `Start Time`),
-                h("div", { class: "vis-end-time"}, `End Time`),
-            ]),
+            views.createControls(),
         ]),
     ]);
   };
