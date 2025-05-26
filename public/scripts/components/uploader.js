@@ -2,6 +2,11 @@ import GlobalEvent from "../utils/event.js";
 import JML from "../utils/jml.js";
 const UploadComponent = () => {
 
+    const DEMO_DATA = {
+        dataFile : "/data/demo.log",
+        description: "Demo data for visualizations. This data is used to demonstrate the functionality of the visualizations in the application. It includes various types of requests and their statuses from idiallo.com april 28th, 2025.",
+    };
+
     const MEGABYTE = 1024 * 1024; // 1MB
     const FILE_SIZE_THRESHOLD = 1 * MEGABYTE; // 5MB
 
@@ -40,7 +45,18 @@ const UploadComponent = () => {
 
     const startVis = () => {
         GlobalEvent.emit("fileUploaded", currentFile);
-    }
+    };
+
+    const loadDemoFile = async () => {
+        const response = await fetch(DEMO_DATA.dataFile);
+        if (!response.ok) {
+            GlobalEvent.emit("error", "Failed to load demo file.");
+            return;
+        }
+        demoComponent.el.style.setProperty("display", "none");
+        const file = new File([await response.text()], "demo.log", { type: "text/plain" });
+        await handleFiles([file]);
+    };
 
     const uploadArea = h("div", { class: "upload-area", id: "uploadArea", onClick, onDragOver, onDragLeave, onDrop }, [
         h("p", { class: "upload-text"}, [
@@ -58,7 +74,11 @@ const UploadComponent = () => {
         h("p", { class: "file-status" }, "Upload status: Not uploaded"),
         h("div", { class: "file-start"}, 
             h("button", { onClick: startVis}, "Start Visualization")
-        )
+        ),
+        
+    ]);
+    const demoComponent = h("div", { class: "demo-btn" }, [
+        h("button", { onClick: async () => loadDemoFile() }, "Load Demo File"),
     ]);
 
     const createComponent = () => {
@@ -66,6 +86,7 @@ const UploadComponent = () => {
             h("h2", { class: "menu-title" }, "Upload Server Logs"),
             fileInfoArea,
             uploadArea,
+            demoComponent,
             h("input", {
                 type: "file",
                 id: "fileInput",
