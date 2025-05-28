@@ -44,7 +44,7 @@ export const Request = function (ctx, info, target, w, h) {
     }
   })(info.statusCode);
   const statusColor = {
-    "2xx": "#e6f4ea",
+    "2xx": "#b8f0c9",
     "3xx": "#cdc7ff",
     "4xx": "#b99b3a",
     "5xx": "#F00",

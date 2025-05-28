@@ -193,11 +193,7 @@ html {
   min-width: 200px;
   border-radius: 10px;
 }
-.box-info.box-it p {
-  margin-bottom: 5px;
-  padding: 6px;
-  font-family: monospace;
-}
+
 .box-info.memory {
   padding: 6px;
   width: 100%;
@@ -230,6 +226,59 @@ html {
   border-radius: 3px;
   background-color: #ebb3b3;
   color: #771515;
+}
+.box-info-row {
+  position: relative;
+  margin: 10px 5px;
+  padding: 6px;
+  font-family: monospace;
+  display: flex;
+}
+.box-info-value--bar {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin-left: 10px;
+}
+.box-info-value--bar::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dotted #aaa;
+}
+.box-info-value--bar::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: var(--percent-width, 0);
+  background-color: #4caf50;
+  height: 6px;
+  border-radius: 3px;
+}
+.box-info-value--count {
+  position: absolute;
+  top: -10px;
+  left: 90%;
+  border-radius: 4px;
+  min-width: 30px;
+  padding: 2px 6px;
+  text-align: right;
+}
+.box-info-row--purple .box-info-value--count {
+  border: 1px solid#8586e4;
+}
+.box-info-row--green .box-info-value--count {
+  border: 1px solid #b8f0c9;
+}
+.box-info-row--orange .box-info-value--count {
+  border: 1px solid #ebd8b3;
+}
+.box-info-row--red .box-info-value--count {
+  border: 1px solid #ebb3b3;
 }
 .box-info-modules {
   display: flex;

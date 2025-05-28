@@ -31,3 +31,5 @@ export const wait = (delay) => {
     }, delay * 1000);
   });
 };
+
+export const clamp = (num, min, max) => Math.max(min, Math.min(num, max));

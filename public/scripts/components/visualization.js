@@ -55,11 +55,27 @@ const Visualization = () => {
 
     onDataReady();
   });
+
   GlobalEvent.on("processInfoUpdated", (info) => {
-    boxInfo.success.innerText = info.status.success;
-    boxInfo.redirect.innerText = info.status.redirect;
-    boxInfo.notFound.innerText = info.status.notFound;
+    boxInfo.success.innerText = info.status.success.toLocaleString();
+    boxInfo.redirect.innerText = info.status.redirect.toLocaleString();
+    boxInfo.notFound.innerText = info.status.notFound.toLocaleString();
+    boxInfo.error.innerText = info.status.error.toLocaleString();
     boxInfo.total.innerText = info.status.total;
+
+    const successPercent = (info.status.success / info.status.total) * 100;
+    const redirectPercent = (info.status.redirect / info.status.total) * 100;
+    const notFoundPercent = (info.status.notFound / info.status.total) * 100;
+    const errorPercent = (info.status.error / info.status.total) * 100;
+    boxInfo.successBar.style.setProperty("--percent-width", `${successPercent}%`);
+    boxInfo.redirectBar.style.setProperty("--percent-width", `${redirectPercent}%`);
+    boxInfo.notFoundBar.style.setProperty("--percent-width", `${notFoundPercent}%`);
+    boxInfo.errorBar.style.setProperty("--percent-width", `${errorPercent}%`);
+    
+    boxInfo.success.style.setProperty("left", `${Util.clamp(successPercent, 15, 90)}%`);
+    boxInfo.redirect.style.setProperty("left", `${Util.clamp(redirectPercent, 15, 90)}%`);
+    boxInfo.notFound.style.setProperty("left", `${Util.clamp(notFoundPercent, 15, 90)}%`);
+    boxInfo.error.style.setProperty("left", `${Util.clamp(errorPercent, 15, 90)}%`);
     updateMemory(info.memory);
     updateTime(info.index);
   });
@@ -286,22 +302,27 @@ const Visualization = () => {
 
     createRequestInfoBox() {
         return h("div", { class: "box-info box-it" }, [
-            h("p", { class: "" }, [
+            h("div", { class: "box-info-row box-info-row--green" }, [
                 h("span", { class: "box-info-name box-info-name--suc" }, "2xx"),
-                " ",
-                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.success = e.target) }, "0"),
+                h("span", { class: "box-info-value box-info-value--bar", onCreate: (e) => (boxInfo.successBar = e.target) }, ""),
+                h("span", { class: "box-info-value box-info-value--count", onCreate: (e) => (boxInfo.success = e.target) }, "0"),
             ]),
-            h("p", { class: "" }, [
+            h("div", { class: "box-info-row box-info-row--purple" }, [
                 h("span", { class: "box-info-name box-info-name--red" }, "3xx"),
-                " ",
-                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.redirect = e.target) }, "0"),
+                h("span", { class: "box-info-value box-info-value--bar", onCreate: (e) => (boxInfo.redirectBar = e.target) }, ""),
+                h("span", { class: "box-info-value box-info-value--count", onCreate: (e) => (boxInfo.redirect = e.target) }, "0"),
             ]),
-            h("p", { class: "" }, [
+            h("div", { class: "box-info-row box-info-row--orange" }, [
                 h("span", { class: "box-info-name box-info-name--not" }, "4xx"),
-                " ",
-                h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.notFound = e.target) }, "0"),
+                h("span", { class: "box-info-value box-info-value--bar", onCreate: (e) => (boxInfo.notFoundBar = e.target) }, ""),
+                h("span", { class: "box-info-value box-info-value--count", onCreate: (e) => (boxInfo.notFound = e.target) }, "0"),
             ]),
-            h("p", { class: "" }, [
+            h("div", { class: "box-info-row box-info-row--red" }, [
+                h("span", { class: "box-info-name box-info-name--err" }, "5xx"),
+                h("span", { class: "box-info-value box-info-value--bar", onCreate: (e) => (boxInfo.errorBar = e.target) }, ""),
+                h("span", { class: "box-info-value box-info-value--count", onCreate: (e) => (boxInfo.error = e.target) }, "0"),
+            ]),
+            h("div", { class: "box-info-row" }, [
                 h("span", { class: "box-info-name" }, "Total: "),
                 h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.total = e.target) }, "0"),
             ]),
