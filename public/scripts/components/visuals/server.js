@@ -12,6 +12,10 @@ const PROCESS_INFO = {
   },
   memory: 0,
   index: 0,
+  type: {
+    human: 0,
+    bot: 0,
+  },
 };
 
 const BG_COLOR = "#1a131d";
@@ -68,10 +72,16 @@ const Server = function (config, data, ctx, w, h) {
           break;
       }
       PROCESS_INFO.status.total++;
+      if (req.bot) {
+        PROCESS_INFO.type.bot++;
+      } else {
+        PROCESS_INFO.type.human++;
+      }
     });
   };
 
   this.onEnter = () => {};
+  this.onExit = () => {};
 
   this.update = (delta) => {
     if (isPaused) {

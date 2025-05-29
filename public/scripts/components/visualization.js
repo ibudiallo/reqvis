@@ -57,6 +57,9 @@ const Visualization = () => {
   });
 
   GlobalEvent.on("processInfoUpdated", (info) => {
+
+    boxInfo.human.innerText = info.type.human.toLocaleString();
+    boxInfo.bot.innerText = info.type.bot.toLocaleString();
     boxInfo.success.innerText = info.status.success.toLocaleString();
     boxInfo.redirect.innerText = info.status.redirect.toLocaleString();
     boxInfo.notFound.innerText = info.status.notFound.toLocaleString();
@@ -329,6 +332,22 @@ const Visualization = () => {
                 h("span", { class: "box-info-name" }, "Total: "),
                 h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.total = e.target) }, "0"),
             ]),
+            h("div", { class: "box-info-users" }, [
+                h("span", { class: "box-info-users-data" }, [
+                    h("i", { class: "icon-bot" }, [
+                        h("span", { class: "icon-bot-eye left" }, []),
+                        h("span", { class: "icon-bot-eye right" }, []),
+                        h("span", { class: "icon-bot-mouth" }, []),
+                    ]),
+                    "Bots: ",
+                    h("span", { class: "box-info-users-data--num", onCreate: (e) => (boxInfo.bot = e.target) }, "0"),
+                ]),
+                h("span", { class: "box-info-users-data" }, [
+                    h("i", { class: "icon-human" }, []),
+                    "Humans: ",
+                    h("span", { class: "box-info-users-data--num", onCreate: (e) => (boxInfo.human = e.target) }, "0"),
+                ]),
+            ]),
         ]);
     },
 
@@ -352,7 +371,18 @@ const Visualization = () => {
 
   const createComponent = () => {
     return h("section", { class: "visualization" }, [
-        h("h2", { class: "menu-title" }, "Visualization"),
+        h("div", { class: "visualization-header" }, [
+            h("div", { class: "visualization-header-title" }, [
+                h("h2", { class: "menu-title" }, "Visualization"),
+            ]),
+            h("div", { class: "visualization-header--btns"}, 
+              h("button", { class: "btn btn-reset", onclick: () => {
+                GlobalEvent.emit("resetVisualization");
+                //state.stack.pop();
+              }}, "Reset"),
+            ),
+        ]),
+        
         h("div", { class: "visualization-content" }, [
             h("div", { class: "visualization-content-hdr"}, [
                 h("h3", { onCreate: (e) => (titleHdr = e.target)}, "Server Info"),

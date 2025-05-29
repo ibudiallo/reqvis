@@ -41,6 +41,9 @@ html {
 }
 
 .btn-reset {
+  background: linear-gradient(to right, #97391d, #f99393);
+}
+.btn-click {
   background: linear-gradient(to right, #1d976c, #93f9b9);
 }
 
@@ -239,6 +242,13 @@ html {
   background-color: rgba(25, 25, 35, 0.8);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.visualization-header {
+    display: flex;
+    justify-content: space-between;
+}
+.visualization-header--btns {
+  display: none;
 }
 .visualization-content {
   position: relative;
@@ -492,4 +502,112 @@ html {
   left: 0;
   transition: width 0.3s ease-in-out;
   margin-right: 1px;
+}
+
+
+/* --- box-info-users styles --- */
+.box-info-users {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.box-info-users-data {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(240,240,240,0.12);
+  border-radius: 6px;
+  padding: 4px 10px;
+  min-width: 60px;
+}
+
+.box-info-users-data--num {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #222;
+  margin-left: 4px;
+}
+
+/* Robot Icon */
+.icon-bot {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  margin-right: 2px;
+}
+.icon-bot::before {
+  /* Head */
+  content: "";
+  display: block;
+  width: 16px;
+  height: 12px;
+  background: #b0bec5;
+  border-radius: 4px 4px 6px 6px;
+  position: absolute;
+  left: 3px;
+  top: 5px;
+  box-shadow: 0 2px 0 #78909c;
+}
+.icon-bot::after {
+  /* Antenna */
+  content: "";
+  display: block;
+  width: 2px;
+  height: 6px;
+  background: #78909c;
+  position: absolute;
+  left: 10px;
+  top: 0;
+  border-radius: 1px;
+}
+.icon-bot-eye {
+  /* Eyes */
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #263238;
+  border-radius: 50%;
+  top: 10px;
+}
+.icon-bot-eye.left {
+  left: 7px;
+}
+.icon-bot-eye.right {
+  left: 12px;
+}
+.icon-bot-mouth {
+  /* Mouth */
+  position: absolute;
+  width: 6px;
+  height: 2px;
+  background: #263238;
+  border-radius: 1px;
+  left: 8px;
+  top: 15px;
+}
+
+/* Human Icon */
+.icon-human {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  margin-right: 2px;
+}
+.icon-human::before {
+  /* Head (sphere) */
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: #4caf50;
+  border-radius: 50%;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }

@@ -1,9 +1,13 @@
 import * as Util from "../../utils/index.js";
 
+const UA_REGEX = /bot|googlebot|bingbot|llurp|duckduckbot|baiduspider|yandexbot|sogou|exabot|ia_archiver|facebot|ia_archiver|rss|feed|python|curl|crawler|flipboard/gi;
 const isBot = (ua) => {
-  return /bot|googlebot|bingbot|llurp|duckduckbot|baiduspider|yandexbot|sogou|exabot|ia_archiver|facebot|ia_archiver|rss/gi.test(
-    ua.toLowerCase()
-  );
+  const lower = ua.toLowerCase();
+  if (UA_REGEX.test(lower)) {
+    return true;
+  }
+  
+  return false;
 };
 
 const USER_TYPE = {
@@ -22,15 +26,17 @@ export const Request = function (ctx, info, target, w, h) {
   this.direction = 1;
   let life = 100;
   let radius = Util.getRandomInt(5, 7);
-  let sizeW = Util.getRandomInt(5, 7);
+  let sizeW = Util.getRandomInt(7, 9);
   let sizeH = sizeW;
 
   const userColors = {
     human: "#007BFF",
-    bot: "#64d769",
+    bot: "#b0bec5",
   };
 
-  const userType = isBot(info.userAgent) ? USER_TYPE.BOT : USER_TYPE.HUMAN;
+  this.bot = isBot(info.userAgent);
+
+  const userType = this.bot ? USER_TYPE.BOT : USER_TYPE.HUMAN;
 
   this.statusType = ((code) => {
     if (code >= 200 && code < 300) {
@@ -50,6 +56,12 @@ export const Request = function (ctx, info, target, w, h) {
     "5xx": "#F00",
   };
 
+  const botColors = {
+    "2xx": "#b0bec5",
+    "3xx": "#cfd8dc",
+    "4xx": "#ffcc80",
+    "5xx": "#ff8a80",
+  };
   const bounces = {
     "2xx": "normal",
     "3xx": "wave",
@@ -179,18 +191,34 @@ export const Request = function (ctx, info, target, w, h) {
     }
   };
 
-  this.render = () => {
+  const drawBot = () => {
     ctx.beginPath();
     ctx.fillStyle = currentColor;
+    ctx.fillRect(x, y, sizeW, sizeH);
+    ctx.fillRect(x + sizeW/2 - 1, y - 4, 2, 5);
+    ctx.beginPath();
+    ctx.fillStyle = botColors[this.statusType] || "#b0bec5";
+    ctx.arc(x + 2, y+2, 1, 0, Math.PI * 2);
+    ctx.arc(x + sizeW - 2, y+2, 1, 0, Math.PI * 2);
+    ctx.rect(x + 2, y + sizeH - 2, sizeW - 4, 1);
+    ctx.fill();
+  };
 
+  const drawHuman = () => {
+    ctx.beginPath();
+    ctx.fillStyle = currentColor;
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  this.render = () => {
     switch (userType) {
       case USER_TYPE.HUMAN:
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        drawHuman();
         break;
       case USER_TYPE.BOT:
-        ctx.rect(x, y, sizeW, sizeH);
+        drawBot();
         break;
     }
-    ctx.fill();
   };
 };
