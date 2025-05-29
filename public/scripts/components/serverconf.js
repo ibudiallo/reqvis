@@ -31,10 +31,13 @@ const ServerConfigComponent = () => {
           return h("input", {
             type: "range",
             id: name,
-            value: config[name].val,
-            min: config[name].min || 0,
-            max: config[name].max || 100,
-            step: config[name].step || 1,
+            onCreate: (e) => {
+              let el = e.target;
+              el.setAttribute("min", config[name].min || 0);
+              el.setAttribute("max", config[name].max || 100);
+              el.setAttribute("step", config[name].step || 1);
+              el.setAttribute("value", config[name].val);
+            },
             oninput: (e) => {
               config[name].val = parseInt(e.target.value);
               updateServerConfig(config);
@@ -42,12 +45,15 @@ const ServerConfigComponent = () => {
           });
         }
         return h("div", { class: "progress-group" }, [
-          h("label", { for: name }, config[name].name),
+          h("label", { for: name }, [
+            config[name].name, 
+            ": ",
+            config[name].type !== "text" ? h("span", { id: `${name}_txt`}, config[name].val ) : null,
+          ]),
           config[name].type === "text" ? renderText(name) : renderNumber(name),
-          config[name].type !== "text" ? h("span", { id: `${name}_txt`}, config[name].val ) : null,
         ]);
     });
-    return h("section", { class: "server-config", onCreate: (e) => (el = e.target)}, [
+    return h("section", { class: "subsection server-config", onCreate: (e) => (el = e.target)}, [
       h("h2", { class: "menu-title" }, "Server Configuration"),
       h("div", { class: "progress-groups"}, props),
     ]);

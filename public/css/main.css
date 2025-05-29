@@ -4,16 +4,75 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(
+    135deg,
+    rgb(26, 42, 108),
+    rgb(178, 31, 31),
+    rgb(26, 42, 108)
+  );
   color: #333;
+}
+
+.btn {
+  display: inline-block;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 10px 5px 0 0;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-reset {
+  background: linear-gradient(to right, #1d976c, #93f9b9);
+}
+
+.btn-add {
+  background: linear-gradient(to right, #2193b0, #6dd5ed);
+}
+
+.subsection {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.subsection--info {
+    background: rgba(255, 255, 255, 0.1);
+}
+.howto-list {
+  padding-left: 15px;
+  margin-left: 20px;
+}
+.howto-list li {
+    list-style-type: disc;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
 }
 
 .page-header {
   display: flex;
   align-items: center;
   padding: 1rem;
-  background-color: #4caf50;
   color: white;
 }
 
@@ -23,9 +82,12 @@ html {
 }
 .page-hdr__title h1 {
   font-size: 2rem;
-  margin: 0;
-  color: #fff;
-  line-height: 1.1em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.3em;
 }
 .page-hdr__title p {
   margin: 0;
@@ -34,13 +96,11 @@ html {
 
 .page-main {
   padding: 2rem;
-  background-color: #fff;
   min-height: 400px;
   position: relative;
   overflow: hidden;
   max-width: 1275px;
   margin: 0 auto;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .page-footer {
@@ -62,16 +122,16 @@ html {
 
 /** Side Bar **/
 .sidebar {
-  background-color: #333;
   color: #fff;
   padding: 20px;
-  height: 300px;
   overflow-y: hidden;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   opacity: 0.9;
   border-radius: 10px;
   overflow: hidden;
   transition: height 0.3s ease-in-out;
+  background-color: rgba(25, 25, 35, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar.hidden {
@@ -89,10 +149,9 @@ html {
   margin-bottom: 20px;
 }
 .menu-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
-  color: #4caf50;
-  margin-top: 1em;
+  color: #feb47b
 }
 .sidebar-content {
   display: flex;
@@ -100,18 +159,35 @@ html {
 .sidebar-content > section {
   margin-right: 20px;
 }
-.progress-groups {
-  display: table;
-}
+
 .progress-group {
-  display: table-row;
   margin: 3px 0;
 }
 .progress-group label,
-.progress-group input,
-.progress-group span {
-  display: table-cell;
+.progress-group input {
+  display: block;
   margin: 12px 6px;
+}
+.progress-group label {
+    font-weight: bold;;
+}
+.progress-group input[type="range"] {
+  width: 100%;
+  margin: 5px 0;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #4a4a6a;
+  border-radius: 4px;
+  outline: none;
+}
+.progress-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff7e5f;
+  cursor: pointer;
 }
 
 /* Upload section **/
@@ -160,7 +236,7 @@ html {
 .visualization {
   margin: 20px auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: rgba(25, 25, 35, 0.8);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -170,7 +246,7 @@ html {
 .visualization-content-hdr h3 {
   margin: 0;
   font-size: 1.5rem;
-  color: #333;
+  color: #f0f0f0;
   line-height: 2em;
 }
 
@@ -181,6 +257,10 @@ html {
 .visualization-canvas-box {
   min-width: 800px;
   margin-right: 12px;
+}
+.visualization-canvas-box canvas {
+  border-radius: 15px;
+  border: 2px solid #4a4a6a
 }
 .box-info {
   margin-bottom: 20px;

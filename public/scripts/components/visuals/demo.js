@@ -3,12 +3,15 @@ import * as Util from "../../utils/index.js";
 
 const BALL_COUNT = 20;
 
+const MIN_RADIUS = 5;
+const MAX_RADIUS = 40;
+
 const Ring = function (ctx, x, y) {
   this.x = x;
   this.y = y;
   this.r = 0;
 
-  let maxRadius = Util.getRandomInt(5, 40);
+  let maxRadius = Util.getRandomInt(MIN_RADIUS, MAX_RADIUS);
   let opacity = 100;
 
   this.update = (x, y) => {

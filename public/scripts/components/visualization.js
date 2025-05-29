@@ -287,9 +287,9 @@ const Visualization = () => {
 
     createServerInfoBox() {
         return h("div", { class: "visualization-server-box" }, [
+            this.createMemoryBox(),
             this.createTimeBox(),
             this.createRequestInfoBox(),
-            this.createMemoryBox(),
         ]);
     },
 

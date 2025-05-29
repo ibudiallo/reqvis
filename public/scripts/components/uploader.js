@@ -53,9 +53,12 @@ const UploadComponent = () => {
             GlobalEvent.emit("error", "Failed to load demo file.");
             return;
         }
-        demoComponent.el.style.setProperty("display", "none");
         const file = new File([await response.text()], "demo.log", { type: "text/plain" });
         await handleFiles([file]);
+    };
+
+    const hideDemoComponent = () => {
+        demoComponent.el.style.setProperty("display", "none");
     };
 
     const uploadArea = h("div", { class: "upload-area", id: "uploadArea", onClick, onDragOver, onDragLeave, onDrop }, [
@@ -73,16 +76,16 @@ const UploadComponent = () => {
         h("p", { class: "file-entries" }, "Total Entries: none"),
         h("p", { class: "file-status" }, "Upload status: Not uploaded"),
         h("div", { class: "file-start"}, 
-            h("button", { onClick: startVis}, "Start Visualization")
+            h("button", { class: "btn btn-add", onClick: startVis}, "Start Visualization")
         ),
         
     ]);
     const demoComponent = h("div", { class: "demo-btn" }, [
-        h("button", { onClick: async () => loadDemoFile() }, "Load Demo File"),
+        h("button", { class: "btn btn-add", onClick: async () => loadDemoFile() }, "Load Demo File"),
     ]);
 
     const createComponent = () => {
-        return h("section", { class: "upload-dection" }, [
+        return h("section", { class: "subsection upload-box" }, [
             h("h2", { class: "menu-title" }, "Upload Server Logs"),
             fileInfoArea,
             uploadArea,
@@ -194,6 +197,7 @@ const UploadComponent = () => {
         if (files.length === 0) {
             return;
         }
+        hideDemoComponent();
         isUploaded = true;
         const file = files[0];
         await estimateFileContent(file);
