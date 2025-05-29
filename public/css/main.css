@@ -65,7 +65,7 @@ html {
 .howto-list li {
     list-style-type: disc;
     margin-bottom: 10px;
-    padding-left: 20px;
+    padding-left: 0;
     position: relative;
 }
 
@@ -253,6 +253,7 @@ html {
 .visualization-canvas {
   display: flex;
   justify-content: center;
+  margin-bottom: 1em;
 }
 .visualization-canvas-box {
   min-width: 800px;
@@ -261,6 +262,11 @@ html {
 .visualization-canvas-box canvas {
   border-radius: 15px;
   border: 2px solid #4a4a6a
+}
+.visualization-server-box {
+    background-color: rgba(25, 25, 35, 0.8);
+    margin-top: 0;
+    border-radius: 15px;
 }
 .box-info {
   margin-bottom: 20px;
@@ -272,6 +278,12 @@ html {
   width: 100%;
   min-width: 200px;
   border-radius: 10px;
+}
+.box-info-txt {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #f0f0f0;
+    margin-bottom: 10px;
 }
 
 .box-info.memory {
@@ -339,17 +351,28 @@ html {
   height: 6px;
   border-radius: 3px;
 }
+.box-info-row--orange .box-info-value--bar::after {
+  background-color: #ebd8b3;
+}
+.box-info-row--red .box-info-value--bar::after {
+  background-color: #ebb3b3;
+}
+.box-info-row--purple .box-info-value--bar::after {
+  background-color: #8586e4;
+}
 .box-info-value--count {
   position: absolute;
-  top: -10px;
+  top: -15px;
   left: 90%;
   border-radius: 4px;
   min-width: 30px;
   padding: 2px 6px;
   text-align: right;
+  font-size: 12px;
 }
+
 .box-info-row--purple .box-info-value--count {
-  border: 1px solid#8586e4;
+  border: 1px solid #8586e4;
 }
 .box-info-row--green .box-info-value--count {
   border: 1px solid #b8f0c9;
@@ -366,6 +389,7 @@ html {
 }
 .box-info-modules-cols {
   height: 36px;
+  color: #f0f0f0;
 }
 .bim-item {
   display: inline-block;
@@ -376,6 +400,12 @@ html {
 }
 .bim-item.active {
   background-color: red;
+}
+
+.timer-box {
+    margin-left: 10px;
+    color: #f0f0f0;
+    font-size: 1.2rem;
 }
 
 .visualization-controls {

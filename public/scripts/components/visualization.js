@@ -61,7 +61,7 @@ const Visualization = () => {
     boxInfo.redirect.innerText = info.status.redirect.toLocaleString();
     boxInfo.notFound.innerText = info.status.notFound.toLocaleString();
     boxInfo.error.innerText = info.status.error.toLocaleString();
-    boxInfo.total.innerText = info.status.total;
+    boxInfo.total.innerText = info.status.total.toLocaleString();
 
     const successPercent = (info.status.success / info.status.total) * 100;
     const redirectPercent = (info.status.redirect / info.status.total) * 100;
@@ -248,17 +248,21 @@ const Visualization = () => {
   };
 
   const views = {
-    createCanvas: () => {
+    createCanvas() {
         return h("div", { class: "visualization-canvas-box" }, [
             h("canvas", { id: "visualization-canvas", width: 600, height: 400, onCreate: (e) => {
                 canvas.el = e.target;
                 canvas.ctx = canvas.el.getContext("2d");
                 onPageReady();
             } }, []),
+            this.createTimeBox(),
+            h("div", { class: "subsection" }, [
+                
+            ]),
         ]);
     },
 
-    createControls: () => {
+    createControls() {
         return h("div", { class: "visualization-controls hidden" , onCreate: (e) => (controlsEl = e.target)}, [
             h("div", { class: "vis-controls-button"},
                 h("button", { class: "play", onclick: (e) => {
@@ -286,17 +290,16 @@ const Visualization = () => {
     },
 
     createServerInfoBox() {
-        return h("div", { class: "visualization-server-box" }, [
+        return h("div", { class: "subsection visualization-server-box" }, [
             this.createMemoryBox(),
-            this.createTimeBox(),
             this.createRequestInfoBox(),
         ]);
     },
 
     createTimeBox() {
-        return h("p", { class: "box-info" }, [
-            h("span", { class: "box-info-name" }, "Time: "),
-            h("span", { class: "box-info-value", onCreate: (e) => (boxInfo.timeBox = e.target)  }, "00:00:00"),
+        return h("div", { class: "timer-box" }, [
+            h("span", { class: "timer-box__title" }, "Time: "),
+            h("span", { class: "timer-box__val", onCreate: (e) => (boxInfo.timeBox = e.target)  }, "00:00:00"),
         ]);
     },
 

@@ -14,6 +14,8 @@ const PROCESS_INFO = {
   index: 0,
 };
 
+const BG_COLOR = "#1a131d";
+
 const Server = function (config, data, ctx, w, h) {
   const MARGIN = 64;
   let isPaused = null;
@@ -98,7 +100,7 @@ const Server = function (config, data, ctx, w, h) {
 
   this.render = () => {
     ctx.clearRect(0, 0, this.w, this.h);
-    ctx.fillStyle = "#2d3436";
+    ctx.fillStyle = BG_COLOR;
     ctx.fillRect(0, 0, this.w, this.h);
     metaBox.render();
   };
