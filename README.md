@@ -13,12 +13,14 @@
 
 > ⚠️ **Note**: This project is currently under active development. Star and watch this repository to receive updates as features are implemented.
 
+![Latest Screenshot](resources/reqvis_preview.png)
+
 ## ✨ Features
 
-- **Simple Upload Interface**: Easily upload and parse Apache log files
-- **Interactive Visualizations**: Analyze request patterns through dynamic JavaScript canvas visualizations
-- **Customizable Views**: Filter and adjust visualizations to focus on specific metrics
-- **Lightweight**: No heavy dependencies, runs in any modern browser
+- [x] **Simple Upload Interface**: Easily upload and parse Apache log files
+- [x] **Interactive Visualizations**: Analyze request patterns through dynamic JavaScript canvas visualizations
+- [x] **Lightweight**: No heavy dependencies, runs in any modern browser
+- [] **Customizable Views**: Filter and adjust visualizations to focus on specific metrics
 
 ## Usage
 
@@ -50,6 +52,12 @@ grep "25/Apr/2025" /var/log/apache2/access.log > sample_logs.log
 ```
 
 3. Remove any sensitive information if needed before uploading
+
+To exclude requests to admin paths (e.g., URLs containing `/admin`), you can use `grep -v`:
+
+```bash
+grep "25/Apr/2025" /var/log/apache2/access.log | grep -v "/admin" > sample_logs.log
+```
 
 ## 🤝 Contributing
 
