@@ -28,6 +28,7 @@ export const Request = function (ctx, info, target, w, h) {
   let radius = Util.getRandomInt(5, 7);
   let sizeW = Util.getRandomInt(7, 9);
   let sizeH = sizeW;
+  this.queueLife = 0;
 
   const userColors = {
     human: "#007BFF",

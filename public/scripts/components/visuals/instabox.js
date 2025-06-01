@@ -50,6 +50,8 @@ export const InstaBox = function (ctx, config, width, height) {
     queuedRequests.push(req);
   };
 
+  const QUEUE_RENDER_LIMIT = 79; // Limit to 10 requests in the queue box
+
   const drawQueueBox = () => {
     ctx.beginPath();
     let x = 2;
@@ -60,10 +62,15 @@ export const InstaBox = function (ctx, config, width, height) {
     ctx.fillText(`Queue: ${totalQueued.toLocaleString()}`, x + 10, y - 16);
     ctx.strokeStyle = "#fff";
     ctx.strokeRect(x, y, width - 4, 22);
+
     queuedRequests
       .filter((r) => !r.ready)
       .map((r, i) => {
-        ctx.fillStyle = "green";
+        if (i >= QUEUE_RENDER_LIMIT) return; // Limit requests rendered in the queue box
+        r.queueLife++;
+        r.queueLife = Math.min(r.queueLife, 100); // Cap the queue life at 100
+        let color = Math.round(255 - (255 * r.queueLife / 100));
+        ctx.fillStyle = `rgb(${color}, ${color}, ${color})`;
         ctx.fillRect(
           x + 2 + i * (workerWidth + padding),
           y + 2,

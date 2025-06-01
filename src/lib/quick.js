@@ -34,6 +34,9 @@ const server = {
         case ".svg":
           contentType = "image/svg+xml";
           break;
+        case ".log":
+          contentType = "text/plain";
+          break;
         default:
           contentType = "text/html";
       }

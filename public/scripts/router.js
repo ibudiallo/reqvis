@@ -1,13 +1,12 @@
 import Home from "./pages/home.js";
 
 const routes = {
-  "/start.html": Home,
+  "/index.html": Home,
 };
 
 const getPage = (url) => {
   const keys = Object.keys(routes);
-  for (const i in keys) {
-    const key = keys[i];
+  for (const key of keys) {
     const escapedPattern = key.replace(/:[^\s/]+/g, "([^\\s/]+)");
     const regex = new RegExp(`^${escapedPattern}$`);
     if (url.match(regex)) {
