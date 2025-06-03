@@ -80,6 +80,7 @@ const Ball = function (ctx, w, h, x, y, r) {
 };
 
 const Demo = function (ctx, w, h) {
+  this.stackName = "Demo";
   this.w = w;
   this.h = h;
   const cv = ctx.canvas;

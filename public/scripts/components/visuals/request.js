@@ -6,6 +6,10 @@ const isBot = (ua) => {
   if (UA_REGEX.test(lower)) {
     return true;
   }
+  if (lower.length < 10) {
+    // If the user agent is very short, it might be a bot
+    return true; // Handle cases where user agent is not provided
+  }
   
   return false;
 };
@@ -21,7 +25,7 @@ export const Request = function (ctx, info, target, w, h) {
   const startX = x;
   const startY = y;
   this.done = false;
-  const speed = Util.getRandomInt(10, 15);
+  const speed = Util.getRandomInt(5, 10);
   this.target = target || { x: w, y: y };
   this.direction = 1;
   let life = 100;

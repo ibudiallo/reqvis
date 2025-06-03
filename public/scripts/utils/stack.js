@@ -43,7 +43,9 @@ const StateStack = function () {
   };
   this.pop = () => {
     const state = states.top();
-    state.onExit();
+    if (state.onExit) {
+      state.onExit();
+    }
     return states.pop();
   };
 
@@ -59,6 +61,10 @@ const StateStack = function () {
     if (state.onResume) {
       state.onResume();
     }
+  };
+
+  this.top = () => {
+    return states.top();
   };
 };
 

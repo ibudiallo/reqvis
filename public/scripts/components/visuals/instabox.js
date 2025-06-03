@@ -69,7 +69,7 @@ export const InstaBox = function (ctx, config, width, height) {
         if (i >= QUEUE_RENDER_LIMIT) return; // Limit requests rendered in the queue box
         r.queueLife++;
         r.queueLife = Math.min(r.queueLife, 100); // Cap the queue life at 100
-        let color = Math.round(255 - (255 * r.queueLife / 100));
+        let color = Math.round(255 - (255 * r.queueLife / 100) * 2);
         ctx.fillStyle = `rgb(${color}, ${color}, ${color})`;
         ctx.fillRect(
           x + 2 + i * (workerWidth + padding),
