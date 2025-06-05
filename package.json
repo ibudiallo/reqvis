@@ -1,6 +1,6 @@
 {
   "name": "reqvis",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Reqvis is a lightweight, browser-based log visualization tool.",
   "main": "server.js",
   "scripts": {
