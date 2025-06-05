@@ -10,6 +10,10 @@ const UploadComponent = () => {
     const MEGABYTE = 1024 * 1024; // 1MB
     const FILE_SIZE_THRESHOLD = 1 * MEGABYTE; // 5MB
 
+    GlobalEvent.on("resetVisualization", () => {
+        resetAll();
+    });
+
     const currentFile = {
         fileName: "No file selected",
         fileSize: 0,
@@ -47,6 +51,17 @@ const UploadComponent = () => {
         GlobalEvent.emit("fileUploaded", currentFile);
     };
 
+    const resetAll = () => {
+        isUploaded = false;
+        uploadArea.el.classList.remove("hasFile");
+        fileInfoArea.el.childNodes[0].innerText = "File name: none";
+        fileInfoArea.el.childNodes[1].innerText = "File Size: 0";
+        fileInfoArea.el.childNodes[2].innerText = `Total Entries: 0`;
+        fileInfoArea.el.childNodes[3].innerText = "Upload status: None";
+        fileInfoArea.el.childNodes[4].classList.remove("show")
+        showDemoComponent();
+    };
+
     const loadDemoFile = async () => {
         const response = await fetch(DEMO_DATA.dataFile);
         if (!response.ok) {
@@ -60,6 +75,10 @@ const UploadComponent = () => {
     const hideDemoComponent = () => {
         demoComponent.el.style.setProperty("display", "none");
     };
+    
+    const showDemoComponent = () => {
+        demoComponent.el.style.setProperty("display", "block");
+    }
 
     const uploadArea = h("div", { class: "upload-area", id: "uploadArea", onClick, onDragOver, onDragLeave, onDrop }, [
         h("p", { class: "upload-text"}, [

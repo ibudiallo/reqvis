@@ -82,6 +82,14 @@ const Visualization = () => {
     updateMemory(info.memory);
     updateTime(info.index);
   });
+  GlobalEvent.on("resetVisualization", () => {
+    const currentState = state.stack.top();
+    controlsEl.classList.add("hidden");
+    if (currentState.stateName !== "Server") {
+      return;
+    }
+    state.stack.pop();
+  });
 
   const updateTime = (index) => {
     const startTime = state.currentFile.startTime.getTime();
@@ -163,7 +171,7 @@ const Visualization = () => {
       });
       return arr;
     })();
-
+    columnsBox.innerHTML = "";
     render(columnsBox, html);
 
     progressBarEl.parentNode.addEventListener("click", (e) => {
@@ -378,7 +386,6 @@ const Visualization = () => {
             h("div", { class: "visualization-header--btns"}, 
               h("button", { class: "btn btn-reset", onclick: () => {
                 GlobalEvent.emit("resetVisualization");
-                //state.stack.pop();
               }}, "Reset"),
             ),
         ]),

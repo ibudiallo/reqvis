@@ -40,6 +40,12 @@ const server = {
         default:
           contentType = "text/html";
       }
+      if (req.url === "/version") {
+        const { version } = require("../../package.json");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ version }), "utf-8");
+        return;
+      }
 
       fs.readFile(filePath, (err, content) => {
         if (err) {

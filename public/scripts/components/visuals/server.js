@@ -21,6 +21,7 @@ const PROCESS_INFO = {
 const BG_COLOR = "#1a131d";
 
 const Server = function (config, data, ctx, w, h) {
+  this.stackName = "Server";
   const MARGIN = 64;
   let isPaused = null;
   this.w = w;
@@ -109,6 +110,9 @@ const Server = function (config, data, ctx, w, h) {
   };
 
   this.render = () => {
+    if (isPaused) {
+      return;
+    }
     ctx.clearRect(0, 0, this.w, this.h);
     ctx.fillStyle = BG_COLOR;
     ctx.fillRect(0, 0, this.w, this.h);

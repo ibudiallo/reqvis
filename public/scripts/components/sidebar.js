@@ -7,13 +7,33 @@ const { h } = JML();
 const SideBar = (children) => {
   let el = null;
   GlobalEvent.on("fileUploaded", () => {
-    el.classList.add("hide");
-    Util.timer(() => {
-      el.classList.add("hidden");
-    }, .3);
+    Util.wait(0)
+      .then((wait) => {
+        el.classList.add("hide");
+        return wait(0.3);
+      })
+      .then((wait) => {
+        el.classList.add("hidden");
+      });
+  });
+  GlobalEvent.on("resetVisualization", () => {
+    el.classList.remove("hidden");
+    Util.wait(0)
+      .then((wait) => {
+        el.classList.remove("hidden");
+        return wait(0.1);
+      })
+      .then((wait) => {
+        el.classList.remove("hide");
+      });
   });
 
-  return h("section", { class: "sidebar", onCreate: (e) => (el = e.target) }, [
+  return h("section", { class: "sidebar", onCreate: (e) => {
+    el = e.target;
+    Util.timer(()=> {
+      el.style.setProperty("--var-height", `${el.offsetHeight}px`);
+    }, .1);
+  } }, [
     h("div", { class: "sidebar-content" }, children),
   ]);
 };

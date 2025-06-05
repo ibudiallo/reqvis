@@ -131,14 +131,13 @@ html {
 .sidebar {
   color: #fff;
   padding: 20px;
-  overflow-y: hidden;
   opacity: 0.9;
-  border-radius: 10px;
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out, padding .3s ease-in;
   background-color: rgba(25, 25, 35, 0.8);
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  height: var(--var-height);
 }
 
 .sidebar.hidden {
@@ -146,6 +145,7 @@ html {
 }
 .sidebar.hide {
   height: 0;
+  padding: 0;
 }
 .sidebar ul {
   list-style-type: none;
@@ -250,9 +250,6 @@ html {
 .visualization-header {
     display: flex;
     justify-content: space-between;
-}
-.visualization-header--btns {
-  display: none;
 }
 .visualization-content {
   position: relative;
