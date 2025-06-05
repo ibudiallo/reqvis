@@ -1,11 +1,12 @@
 {
   "name": "reqvis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reqvis is a lightweight, browser-based log visualization tool.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/ibudiallo/reqvis/issues"
   },
-  "homepage": "https://github.com/ibudiallo/reqvis#readme"
+  "homepage": "https://github.com/ibudiallo/reqvis#readme",
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
 }
