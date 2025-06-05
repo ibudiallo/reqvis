@@ -9,6 +9,8 @@
 
 **reqvis** is a lightweight, browser-based tool that visualizes Apache server logs through interactive canvas renderings. Upload your logs and instantly see request patterns, traffic spikes, and response time distributions in an intuitive visual format that reveals insights traditional log analysis misses.
 
+[**👉 Try the Live Demo**](https://www.ibrahimdiallo.com/reqvis)  
+
 ![reqvis preview](resources/demo.webp)
 
 > ⚠️ **Note**: This project is currently under active development. Star and watch this repository to receive updates as features are implemented.
