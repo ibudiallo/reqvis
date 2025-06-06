@@ -10,6 +10,8 @@ const UploadComponent = () => {
     const MEGABYTE = 1024 * 1024; // 1MB
     const FILE_SIZE_THRESHOLD = 1 * MEGABYTE; // 5MB
 
+    let isLoading = false;
+
     GlobalEvent.on("resetVisualization", () => {
         resetAll();
     });
@@ -62,14 +64,26 @@ const UploadComponent = () => {
         showDemoComponent();
     };
 
-    const loadDemoFile = async () => {
+    const loadDemoFile = async (e) => {
+        if (isLoading) {
+            return false;
+        }
+        isLoading = true;
+        e.innerHTML = "Loading";
+        e.classList.add("loading");
         const response = await fetch(DEMO_DATA.dataFile);
         if (!response.ok) {
             GlobalEvent.emit("error", "Failed to load demo file.");
+            isLoading = false;
+            e.innerHTML = "Load Demo File";
+            e.classList.remove("loading");
             return;
         }
         const file = new File([await response.text()], "demo.log", { type: "text/plain" });
         await handleFiles([file]);
+        isLoading = false;
+        e.innerHTML = "Load Demo File";
+        e.classList.remove("loading");
     };
 
     const hideDemoComponent = () => {
@@ -100,7 +114,7 @@ const UploadComponent = () => {
         
     ]);
     const demoComponent = h("div", { class: "demo-btn" }, [
-        h("button", { class: "btn btn-add", onClick: async () => loadDemoFile() }, "Load Demo File"),
+        h("button", { class: "btn btn-add", onClick: async (e) => loadDemoFile(e.target) }, "Load Demo File"),
     ]);
 
     const createComponent = () => {
