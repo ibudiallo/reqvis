@@ -60,6 +60,7 @@ html {
 }
 .subsection--info {
     background: rgba(255, 255, 255, 0.1);
+    max-width: 400px;
 }
 .howto-list {
   padding-left: 15px;
