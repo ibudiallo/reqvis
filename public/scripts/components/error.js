@@ -10,9 +10,14 @@ const ErrorComponent = () => {
     updateErrorBox(message);
   });
 
-  errorBox = h("div", { class: "error", id: "error-box" }, []);
+  errorBox = h("div", { class: "page-error", id: "error-box" }, []);
   const updateErrorBox = (message) => {
-    const html = h("div", { class: "error-message" }, message);
+    const html = h("div", { class: "error-message" }, [
+      h("div", {}, message),
+      h("div", { class: "close-btn", onClick: (e) => {
+        errorBox.el.innerHTML = "";
+      }}, "")
+    ]);
     errorBox.el.innerHTML = "";
     render(errorBox.el, html);
   };

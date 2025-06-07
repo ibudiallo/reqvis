@@ -64,26 +64,27 @@ const UploadComponent = () => {
         showDemoComponent();
     };
 
-    const loadDemoFile = async (e) => {
+    const loadDemoFile = async (elem) => {
         if (isLoading) {
             return false;
         }
         isLoading = true;
-        e.innerHTML = "Loading";
-        e.classList.add("loading");
-        const response = await fetch(DEMO_DATA.dataFile);
-        if (!response.ok) {
+        elem.innerHTML = "Loading";
+        elem.classList.add("loading");
+        try {
+            const response = await fetch(DEMO_DATA.dataFile);
+            const file = new File([await response.text()], "demo.log", { type: "text/plain" });
+            await handleFiles([file]);
+            isLoading = false;
+            elem.innerHTML = "Load Demo File";
+            elem.classList.remove("loading");
+        } catch(e) {
             GlobalEvent.emit("error", "Failed to load demo file.");
             isLoading = false;
-            e.innerHTML = "Load Demo File";
-            e.classList.remove("loading");
+            elem.innerHTML = "Load Demo File";
+            elem.classList.remove("loading");
             return;
         }
-        const file = new File([await response.text()], "demo.log", { type: "text/plain" });
-        await handleFiles([file]);
-        isLoading = false;
-        e.innerHTML = "Load Demo File";
-        e.classList.remove("loading");
     };
 
     const hideDemoComponent = () => {

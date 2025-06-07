@@ -83,12 +83,7 @@ const Visualization = () => {
     updateTime(info.index);
   });
   GlobalEvent.on("resetVisualization", () => {
-    const currentState = state.stack.top();
-    controlsEl.classList.add("hidden");
-    if (currentState.stateName !== "Server") {
-      return;
-    }
-    state.stack.pop();
+    unloadServer();
   });
 
   const updateTime = (index) => {
@@ -257,6 +252,32 @@ const Visualization = () => {
   const stopServer = () => {
     server.onPause();
   };
+
+  const unloadServer = () => {
+    if (!server) {
+      return; 
+    }
+    GlobalEvent.emit("pauseVisualization");
+    stopServer();
+    server = null;
+    const currentState = state.stack.top();
+    console.log(0)
+    if (currentState.stackName !== "Server") {
+      console.log(1, currentState.stackName)
+      return;
+    }
+    state.stack.pop();
+    resetControls();
+  }
+
+  const resetControls = () => {
+    controlsEl.classList.add("hidden");
+    columnsBox.innerHTML = "";
+    progressBarEl.style.setProperty("--percent-width", "0%");
+    let btn = document.querySelector(".vis-controls-button button");
+    btn.target.classList.remove("pause");
+    btn.target.classList.add("play");
+  }
 
   const views = {
     createCanvas() {

@@ -18,8 +18,22 @@ const PROCESS_INFO = {
   },
 };
 
+const resetProcessInfo = () => {
+  PROCESS_INFO.status.success = 0;
+  PROCESS_INFO.status.error = 0;
+  PROCESS_INFO.status.redirect = 0;
+  PROCESS_INFO.status.notFound = 0;
+  PROCESS_INFO.status.total = 0;
+  PROCESS_INFO.memory = 0;
+  PROCESS_INFO.index = 0;
+  PROCESS_INFO.type.human = 0;
+  PROCESS_INFO.type.bot = 0;
+};
 const BG_COLOR = "#1a131d";
-
+GlobalEvent.on("resetVisualization", () => {
+  resetProcessInfo();
+  GlobalEvent.emit("processInfoUpdated", PROCESS_INFO);
+});
 const Server = function (config, data, ctx, w, h) {
   this.stackName = "Server";
   const MARGIN = 64;

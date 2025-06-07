@@ -51,6 +51,53 @@ html {
   background: linear-gradient(to right, #2193b0, #6dd5ed);
 }
 
+.home {
+  position: relative;
+}
+
+.error-message {
+  display: flex;
+  justify-content: space-between;
+  background: #fff0f0;
+  color: #b71c1c;
+  border: 1px solid #f44336;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 12px rgba(244, 67, 54, 0.08);
+  text-align: center;
+}
+.close-btn {
+  background: none;
+  border: none;
+  color: #b71c1c;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 8px;
+  line-height: 1;
+  transition: color 0.2s;
+  border-radius: 4px;
+  align-self: flex-start;
+  border: 1px solid #b71c1c;
+}
+.close-btn::after {
+  content: "×";
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1;
+  vertical-align: middle;
+  pointer-events: none;
+  padding-bottom: 4px;
+}
+
+.close-btn:hover {
+  color: #fff;
+  background: #f44336;
+}
+
 .subsection {
   margin-top: 20px;
   padding: 15px;
