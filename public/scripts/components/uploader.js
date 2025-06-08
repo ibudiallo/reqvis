@@ -123,6 +123,7 @@ const UploadComponent = () => {
             h("h2", { class: "menu-title" }, "Upload Server Logs"),
             fileInfoArea,
             uploadArea,
+            h("p", {class : "disclaimer-text"}, "Files are processed in-browser and never sent to the server."),
             demoComponent,
             h("input", {
                 type: "file",

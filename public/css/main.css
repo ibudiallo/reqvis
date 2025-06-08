@@ -246,6 +246,14 @@ html {
 }
 
 /* Upload section **/
+.disclaimer-text {
+  font-size: 0.85rem;
+  color: #d4d4d4;
+  background: none;
+  margin: 8px 0;
+  text-align: center;
+  opacity: 0.8;
+}
 .upload-section {
   text-align: center;
   margin: 20px 0;
