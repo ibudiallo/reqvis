@@ -261,7 +261,6 @@ const Visualization = () => {
     stopServer();
     server = null;
     const currentState = state.stack.top();
-    console.log(0)
     if (currentState.stackName !== "Server") {
       console.log(1, currentState.stackName)
       return;
@@ -275,8 +274,9 @@ const Visualization = () => {
     columnsBox.innerHTML = "";
     progressBarEl.style.setProperty("--percent-width", "0%");
     let btn = document.querySelector(".vis-controls-button button");
-    btn.target.classList.remove("pause");
-    btn.target.classList.add("play");
+    btn.classList.remove("pause");
+    btn.classList.add("play");
+    state.isPlaying = false;
   }
 
   const views = {
@@ -289,7 +289,7 @@ const Visualization = () => {
             } }, []),
             this.createTimeBox(),
             h("div", { class: "subsection" }, [
-                
+              views.createControls(),
             ]),
         ]);
     },
@@ -419,7 +419,7 @@ const Visualization = () => {
                 views.createCanvas(),
                 views.createServerInfoBox(),
             ]),
-            views.createControls(),
+            //views.createControls(),
         ]),
     ]);
   };
