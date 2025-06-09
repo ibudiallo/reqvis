@@ -3,7 +3,7 @@ import JML from "../utils/jml.js";
 const UploadComponent = () => {
 
     const DEMO_DATA = {
-        dataFile : "/data/demo.log",
+        dataFile : "/data/demo.log.1",
         description: "Demo data for visualizations. This data is used to demonstrate the functionality of the visualizations in the application. It includes various types of requests and their statuses from idiallo.com april 28th, 2025.",
     };
 
@@ -128,7 +128,7 @@ const UploadComponent = () => {
             h("input", {
                 type: "file",
                 id: "fileInput",
-                //accept: ".log",
+                // accept: ".log",
                 style: "display: none;",
                 onCreate: (e) => (fileinputEl = e.target),
                 onchange: handleFileUpload,
