@@ -2,6 +2,8 @@ import Home from "./pages/home.js";
 
 const routes = {
   "/index.html": Home,
+  "/": Home,
+  "/reqvis": Home,
 };
 
 const getPage = (url) => {

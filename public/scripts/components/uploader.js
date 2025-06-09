@@ -128,7 +128,7 @@ const UploadComponent = () => {
             h("input", {
                 type: "file",
                 id: "fileInput",
-                accept: ".log",
+                //accept: ".log",
                 style: "display: none;",
                 onCreate: (e) => (fileinputEl = e.target),
                 onchange: handleFileUpload,
