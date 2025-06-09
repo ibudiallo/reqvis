@@ -1,4 +1,4 @@
-# reqvis
+# ReqVis
 
 [![GitHub stars](https://img.shields.io/github/stars/ibudiallo/reqvis?style=social)](https://github.com/your-username/reqvis/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/ibudiallo/reqvis?style=social)](https://github.com/your-username/reqvis/network/members)
@@ -7,7 +7,7 @@
 
 ## 🚀 Overview
 
-**reqvis** is a lightweight, browser-based tool that visualizes Apache server logs through interactive canvas renderings. Upload your logs and instantly see request patterns, traffic spikes, and response time distributions in an intuitive visual format that reveals insights traditional log analysis misses.
+**reqvis** is a lightweight, browser-based tool that visualizes Apache server logs through interactive canvas renderings. Upload your logs and instantly see request patterns, traffic spikes, and response time distributions in an intuitive visual format that reveals insights traditional log analysis misses. This repo was inspired by a [blog post](https://idiallo.com/blog/surviving-the-hug-of-death)
 
 [**👉 Try the Live Demo**](https://www.ibrahimdiallo.com/reqvis)  
 
