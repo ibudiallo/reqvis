@@ -22,7 +22,7 @@
 - [x] **Simple Upload Interface**: Easily upload and parse Apache log files
 - [x] **Interactive Visualizations**: Analyze request patterns through dynamic JavaScript canvas visualizations
 - [x] **Lightweight**: No heavy dependencies, runs in any modern browser
-- [] **Customizable Views**: Filter and adjust visualizations to focus on specific metrics
+- [ ] **Customizable Views**: Filter and adjust visualizations to focus on specific metrics
 
 ## Usage
 
